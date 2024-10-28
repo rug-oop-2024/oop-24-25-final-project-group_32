@@ -11,10 +11,10 @@ import numpy as np
 
 
 class Pipeline():
-    
-    def __init__(self, 
+
+    def __init__(self,
                  metrics: List[Metric],
-                 dataset: Dataset, 
+                 dataset: Dataset,
                  model: Model,
                  input_features: List[Feature],
                  target_feature: Feature,

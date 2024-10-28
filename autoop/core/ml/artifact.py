@@ -1,4 +1,5 @@
-import base64
+# import base64
+
 
 class Artifact():
     def __init__(self, path: str, data: bytes, version: str, type: str):
