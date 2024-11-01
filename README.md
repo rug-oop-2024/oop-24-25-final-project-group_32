@@ -154,7 +154,7 @@ If you did not implement the feature
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|--------------------------|---------|         
 | Up-to-date requirements.txt           | NF           |                      |         | |
-| `ML/detect-features`                  | FN           |                      |         | |
+| `ML/detect-features`                  | FN           |  Luca                |    X    | |
 | `ML/artifact`                         | NF           |                      |         | |
 | `ML/feature`                          | NF           |                      |         | |
 | `ML/metric`                           | NF           |                      |         | |
