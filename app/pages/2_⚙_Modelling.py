@@ -1,8 +1,8 @@
 import streamlit as st
-# import pandas as pd
+import pandas as pd
 
 from app.core.system import AutoMLSystem
-# from autoop.core.ml.dataset import Dataset
+from autoop.core.ml.dataset import Dataset
 
 
 st.set_page_config(page_title="Modelling", page_icon="📈")

@@ -1,5 +1,5 @@
 from autoop.core.ml.artifact import Artifact
-# from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod
 import pandas as pd
 import io
 
