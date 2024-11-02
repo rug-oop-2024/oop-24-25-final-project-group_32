@@ -1,24 +1,40 @@
+from typing import Literal
+import numpy as np
+from copy import deepcopy
+import pandas as pd
 
-from typing import List
 from autoop.core.ml.dataset import Dataset
-from autoop.core.ml.feature import Feature
 
 
-def detect_feature_types(dataset: Dataset) -> List[Feature]:
-    """
-    Assumption: only categorical and numerical features and no NaN values.
-    Args:
-        dataset: Dataset
-    Returns:
-        List[Feature]: List of features with their types.
-    """
-    feature_list = []
-    data = dataset.read()
-    for column in data.columns:
-        if data[column].dtype == 'object':
-            feature = Feature(data[column], column, 'categorical')
-            feature_list.append(feature)
-        else:
-            feature = Feature(data[column], column, 'numerical')
-            feature_list.append(feature)
-    return feature_list
+class Feature():
+    # attributes here
+    def __init__(self,
+                 dataset: pd.DataFrame,
+                 name: str,
+                 type: Literal["categorical", "numerical"]):
+        self._name = name
+        self._dataset = dataset.to_csv(index=False).encode()
+        self._type = type
+
+    @property
+    def name(self):
+        return deepcopy(self._name)
+
+    @name.setter
+    def name(self, value: str):
+        self._name = value
+
+    @property
+    def dataset(self):
+        return deepcopy(self._dataset)
+
+    @property
+    def type(self):
+        return deepcopy(self._type)
+
+    @type.setter
+    def type(self, value: Literal["categorical", "numerical"]):
+        self._type = value
+
+    def __str__(self):
+        raise NotImplementedError("To be implemented.")
