@@ -158,7 +158,7 @@ If you did not implement the feature
 | `ML/artifact`                         | NF           |  Maurice             |    X    | |
 | `ML/feature`                          | NF           |  Luca                |    X    | |
 | `ML/metric`                           | NF           |  Maurice             |    X    | |
-| `ML/metric/extensions`                | FN           |                      |         | |
+| `ML/metric/extensions`                | FN           |  Maurice             |    X    | |
 | `ML/model`                            | NF           |                      |         | |
 | `ML/model/extensions`                 | FN           |                      |         | |
 | `ML/pipeline/evaluation`              | FN           |                      |         | | 
