@@ -49,7 +49,8 @@ Pipeline(
 
     @property
     def artifacts(self) -> List[Artifact]:
-        """Used to get the artifacts generated during the pipeline execution to be saved
+        """
+        Used to get the artifacts generated during the pipeline execution to be saved
         """
         artifacts = []
         for name, artifact in self._artifacts.items():
@@ -70,7 +71,7 @@ Pipeline(
         artifacts.append(Artifact(name="pipeline_config", data=pickle.dumps(pipeline_data)))
         artifacts.append(self._model.to_artifact(name=f"pipeline_model_{self._model.type}"))
         return artifacts
-    
+
     def _register_artifact(self, name: str, artifact):
         self._artifacts[name] = artifact
 

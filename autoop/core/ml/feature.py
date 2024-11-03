@@ -1,10 +1,10 @@
 
 from typing import Literal
-# import numpy as np
+import numpy as np
 from copy import deepcopy
 import pandas as pd
 
-# from autoop.core.ml.dataset import Dataset
+from autoop.core.ml.dataset import Dataset
 
 
 class Feature():
