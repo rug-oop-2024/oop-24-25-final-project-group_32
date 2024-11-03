@@ -157,7 +157,7 @@ If you did not implement the feature
 | `ML/detect-features`                  | FN           |  Luca                |    X    | |
 | `ML/artifact`                         | NF           |  Maurice             |    X    | |
 | `ML/feature`                          | NF           |  Luca                |    X    | |
-| `ML/metric`                           | NF           |                      |         | |
+| `ML/metric`                           | NF           |  Maurice             |    X    | |
 | `ML/metric/extensions`                | FN           |                      |         | |
 | `ML/model`                            | NF           |                      |         | |
 | `ML/model/extensions`                 | FN           |                      |         | |
