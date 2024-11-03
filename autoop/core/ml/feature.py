@@ -1,4 +1,3 @@
-
 from typing import Literal
 import numpy as np
 from copy import deepcopy
@@ -8,7 +7,6 @@ from autoop.core.ml.dataset import Dataset
 
 
 class Feature():
-    # attributes here
     def __init__(self,
                  dataset: pd.DataFrame,
                  name: str,
@@ -19,7 +17,7 @@ class Feature():
 
     @property
     def name(self):
-        return deepcopy(self._name)
+        return self._name
 
     @name.setter
     def name(self, value: str):
@@ -38,4 +36,4 @@ class Feature():
         self._type = value
 
     def __str__(self):
-        raise NotImplementedError("To be implemented.")
+        return f"The column is named {self._name} and contains {self._type} variables."

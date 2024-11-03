@@ -38,11 +38,11 @@ class Artifact:
         self._metadata = metadata if metadata is not None else {}
         self._type = type
         self._tags = tags if tags is not None else []
-        self._id = f"{base64.base64_encode(self.asset_path)}-{self.version}"
 
     @property
-    def id(self) -> str:
-        return self._id
+    def id(self):
+        encoded_path = base64.b64encode(self.asset_path.encode()).decode()
+        return f"{encoded_path}:{self.version}"
 
     def read(self) -> bytes:
         return self._data
@@ -50,3 +50,9 @@ class Artifact:
     def save(self, new_data) -> None:
         self._data = new_data
         return self.read
+
+    def get(self):
+        # Look into pipeline what this functions does
+        # Looks like it should get the type
+        # Can be that it should get anything when specified
+        pass
