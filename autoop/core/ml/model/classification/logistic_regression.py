@@ -1,23 +1,15 @@
+from sklearn.linear_model import LogisticRegression
 from autoop.core.ml.model.model import Model
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
 
-class RandomForest(Model):
-    """
-    Random Forest Classifier model for predicting a categorical
-    target variable.
-    This model computes the optimal weights (parameters) for a given
-    set of observations
-    (features) and ground truth (target variable) using the
-    Normal Equation method.
-    """
+class LogisticRegression(Model):
     def __init__(self):
-        self._model = RandomForestClassifier()
+        self._model = LogisticRegression()
         self._parameters = {}
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """
-        Fits the random forest classifier model to the provided data.
+        Fits the logistic regression model to the provided data.
         Args:
             observation (np.ndarray): A 2D array of input features
             (observations).
@@ -26,7 +18,7 @@ class RandomForest(Model):
         """
         self._model.fit(observation, ground_truth)
         self._parameters = {
-            "parameters": self._model.get_params()
+            "weights": self._model.get_params()
         }
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
@@ -39,4 +31,3 @@ class RandomForest(Model):
             np.ndarray: A 1D array of predicted target values.
         """
         return self._model.predict(observation)
-        

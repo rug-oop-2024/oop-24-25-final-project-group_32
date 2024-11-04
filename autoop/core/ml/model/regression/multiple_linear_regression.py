@@ -1,4 +1,5 @@
 from autoop.core.ml.model.model import Model
+from autoop.core.ml.artifact import Artifact
 import numpy as np
 
 class MultipleLinearRegression(Model):
@@ -51,9 +52,7 @@ class MultipleLinearRegression(Model):
         # Compute (X^T X)⁻¹ X^T under the name next_product
         next_product = np.matmul(invert, transposed_observation_matrix)
         weights = np.matmul(next_product, ground_truth)
-        self._parameters = {
-            "parameters": weights
-        }
+        self._parameters["weights"] = weights
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
         """
@@ -67,5 +66,5 @@ class MultipleLinearRegression(Model):
         """
         # Add a column of ones for the intercept term (bias)
         observation_matrix = np.c_[observation, np.ones(observation.shape[0])]
-
-        return observation_matrix.dot(self._parameters['parameters'])
+        return observation_matrix.dot(self._parameters["weights"])
+    
