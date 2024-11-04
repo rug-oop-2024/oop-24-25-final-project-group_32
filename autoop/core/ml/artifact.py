@@ -48,7 +48,7 @@ class Artifact:
         return self._data
 
     def save(self, new_data) -> None:
-        self._data = new_data
+        self._data = new_data.encode()
         return self.read
 
     def get(self):
