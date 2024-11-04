@@ -9,6 +9,10 @@ class Model(ABC):
         self._parameters: dict = {}
         self._data: np.ndarray
 
+    @property
+    def parameters(self) -> dict:
+        return deepcopy(self._parameters)
+    
     @abstractmethod
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         pass

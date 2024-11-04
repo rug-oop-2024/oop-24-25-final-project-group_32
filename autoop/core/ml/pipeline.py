@@ -100,13 +100,8 @@ Pipeline(
     def _train(self):
         X = self._compact_vectors(self._train_X)
         Y = self._train_y
-        self._metrics_results_training = []
-        training = self._model.fit(X, Y)
-        for metric in self._metrics:
-            result_training = metric.evaluate(training, Y)
-            self._metrics_results_training.append((metric, result_training))
-        self._training = training
-
+        self._model.fit(X, Y)
+        
     def _evaluate(self):
         X = self._compact_vectors(self._test_X)
         Y = self._test_y
@@ -123,8 +118,6 @@ Pipeline(
         self._train()
         self._evaluate()
         return {
-            "metrics after training": self._metrics_results_training,
-            "training": self._training,
             "metrics after prediction": self._metrics_results,
             "predictions": self._predictions,
         }

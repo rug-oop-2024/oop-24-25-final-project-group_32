@@ -8,11 +8,9 @@ from autoop.core.ml.dataset import Dataset
 
 class Feature():
     def __init__(self,
-                 dataset: pd.DataFrame,
                  name: str,
                  type: Literal["categorical", "numerical"]):
         self._name = name
-        self._dataset = dataset.to_csv(index=False).encode()
         self._type = type
 
     @property
@@ -23,9 +21,9 @@ class Feature():
     def name(self, value: str):
         self._name = value
 
-    @property
-    def dataset(self):
-        return deepcopy(self._dataset)
+    # @property
+    # def dataset(self):
+    #     return deepcopy(self._dataset)
 
     @property
     def type(self):
