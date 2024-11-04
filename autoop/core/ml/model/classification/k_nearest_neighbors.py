@@ -52,7 +52,8 @@ class KNearestNeighbors(Model):
             containing all the corresponding labels
         """
         self._parameters = {
-            "k": self.k
+            "observations": observations,
+            "ground_truth": ground_truth
         }
         self._data = observations
 
@@ -100,7 +101,7 @@ class KNearestNeighbors(Model):
                             "asset_path",
                             "1.0.0",
                             self._data.encode(),
-                            "k nearest neighbors",
+                            "k nearest",
                             self._parameters,
                             ["classification"]
                             )
