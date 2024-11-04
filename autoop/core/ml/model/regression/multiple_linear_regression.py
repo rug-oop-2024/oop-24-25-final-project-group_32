@@ -2,6 +2,7 @@ from autoop.core.ml.model.model import Model
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 
+
 class MultipleLinearRegression(Model):
     """
     Multiple Linear Regression model for predicting a continuous
