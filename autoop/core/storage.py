@@ -5,8 +5,8 @@ from glob import glob
 
 
 class NotFoundError(Exception):
-    def __init__(self, path):
-        super().__init__(f"Path not found: {path}")
+    def _init_(self, path):
+        super()._init_(f"Path not found: {path}")
 
 
 class Storage(ABC):
@@ -55,7 +55,7 @@ class Storage(ABC):
 
 class LocalStorage(Storage):
 
-    def __init__(self, base_path: str = "./assets"):
+    def _init_(self, base_path: str = "./assets"):
         self._base_path = os.path.normpath(base_path)
         if not os.path.exists(self._base_path):
             os.makedirs(self._base_path)
@@ -82,7 +82,7 @@ class LocalStorage(Storage):
         path = self._join_path(prefix)
         self._assert_path_exists(path)
         # Use os.path.join for compatibility across platforms
-        keys = glob(os.path.join(path, "**", "*"), recursive=True)
+        keys = glob(os.path.join(path, "*", ""), recursive=True)
         return [os.path.relpath(p, self._base_path)
                 for p in keys if os.path.isfile(p)]
 

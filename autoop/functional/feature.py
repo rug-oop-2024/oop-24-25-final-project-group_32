@@ -15,9 +15,9 @@ def detect_feature_types(dataset: Dataset) -> List[Feature]:
     data = dataset.read()
     for column in data.columns:
         if data[column].dtype == 'object':
-            feature = Feature(data[column], column, 'categorical')
+            feature = Feature(name=column, type='categorical')
             feature_list.append(feature)
         else:
-            feature = Feature(data[column], column, 'numerical')
+            feature = Feature(name=column, type='numerical')
             feature_list.append(feature)
     return feature_list

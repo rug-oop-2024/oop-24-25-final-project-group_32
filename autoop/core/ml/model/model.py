@@ -4,10 +4,15 @@ import numpy as np
 from copy import deepcopy
 from typing import Literal
 
+
 class Model(ABC):
     def __init__(self) -> None:
         self._parameters: dict = {}
         self._data: np.ndarray
+
+    @property
+    def parameters(self):
+        return deepcopy(self._parameters)
 
     @abstractmethod
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
