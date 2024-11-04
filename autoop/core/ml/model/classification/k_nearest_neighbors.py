@@ -1,6 +1,8 @@
 import numpy as np
 from collections import Counter
+from copy import deepcopy
 from autoop.core.ml.model.model import Model
+from autoop.core.ml.artifact import Artifact
 
 class KNearestNeighbors(Model):
     def __init__(self, k: int = 3):
@@ -11,7 +13,7 @@ class KNearestNeighbors(Model):
             k (int): Presents the amount of neighbours
             that will be used for the model predictions.
         """
-        super()._init_()
+        super().__init__()
         self._k: int = k
 
     @property
@@ -21,7 +23,7 @@ class KNearestNeighbors(Model):
 
         Returns: The number of neighbors used in the model.
         """
-        return self._k
+        return deepcopy(self._k)
 
     @k.setter
     def set_k(self, k: int) -> None:
@@ -50,9 +52,9 @@ class KNearestNeighbors(Model):
             containing all the corresponding labels
         """
         self._parameters = {
-            "observations": observations,
-            "ground_truth": ground_truth
+            "k": self.k
         }
+        self._data = observations
 
     def predict(self, observations: np.ndarray) -> np.ndarray:
         """
@@ -92,3 +94,14 @@ class KNearestNeighbors(Model):
         k_nearest_labels = [''.join(label) for label in k_nearest_labels]
         prediction = Counter(k_nearest_labels).most_common()
         return prediction[0][0]
+    
+    def to_artifact(self, name) -> Artifact:
+        artifact = Artifact(name,
+                            "asset_path",
+                            "1.0.0",
+                            self._data.encode(),
+                            "k nearest neighbors",
+                            self._parameters,
+                            ["classification"]
+                            )
+        return artifact

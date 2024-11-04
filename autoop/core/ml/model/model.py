@@ -5,8 +5,9 @@ from copy import deepcopy
 from typing import Literal
 
 class Model(ABC):
-    def __init__(self, name: str) -> None:
+    def __init__(self) -> None:
         self._parameters: dict = {}
+        self._data: np.ndarray
 
     @abstractmethod
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
@@ -16,11 +17,6 @@ class Model(ABC):
     def predict(self, observation: np.ndarray) -> np.ndarray:
         pass
 
+    @abstractmethod
     def to_artifact(self) -> Artifact:
-        return Artifact(
-            name=self.__class__.__name__,
-            asset_path="",
-            version="1.0.0",
-            data=deepcopy(self._parameters.encode()),
-            type="Model",
-        )
+        pass

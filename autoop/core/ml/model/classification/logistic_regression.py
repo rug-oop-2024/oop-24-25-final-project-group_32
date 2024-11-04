@@ -1,11 +1,12 @@
 from sklearn.linear_model import LogisticRegression
 from autoop.core.ml.model.model import Model
+from autoop.core.ml.artifact import Artifact
 import numpy as np
 
 class LogisticRegression(Model):
     def __init__(self):
+        super().__init__()
         self._model = LogisticRegression()
-        self._parameters = {}
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """
@@ -20,6 +21,7 @@ class LogisticRegression(Model):
         self._parameters = {
             "weights": self._model.get_params()
         }
+        self._data = observation
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
         """
@@ -31,3 +33,14 @@ class LogisticRegression(Model):
             np.ndarray: A 1D array of predicted target values.
         """
         return self._model.predict(observation)
+    
+    def to_artifact(self, name) -> Artifact:
+        artifact = Artifact(name,
+                            "asset_path",
+                            "1.0.0",
+                            self._data.encode(),
+                            "logistic regression",
+                            self._parameters,
+                            ["classification"]
+                            )
+        return artifact

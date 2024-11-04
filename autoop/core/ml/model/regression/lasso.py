@@ -1,5 +1,6 @@
 from autoop.core.ml.model.model import Model
 from sklearn.linear_model import Lasso
+from autoop.core.ml.artifact import Artifact
 import numpy as np
 
 class Lasso(Model):
@@ -18,6 +19,7 @@ class Lasso(Model):
         Initializes the Lasso regression model by creating an instance of
         IMLasso.
         """
+        super().__init__()
         self.lasso = Lasso()
 
     def fit(self, observations: np.ndarray, ground_truth: np.ndarray) -> None:
@@ -51,3 +53,14 @@ class Lasso(Model):
         """
         predictions = self.lasso.predict(observations)
         return predictions
+    
+    def to_artifact(self, name) -> Artifact:
+        artifact = Artifact(name,
+                            "asset_path",
+                            "1.0.0",
+                            self._data.encode(),
+                            "lasso regression",
+                            self._parameters,
+                            ["regression"]
+                            )
+        return artifact

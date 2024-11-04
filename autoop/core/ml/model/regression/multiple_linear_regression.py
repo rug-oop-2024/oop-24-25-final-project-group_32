@@ -12,6 +12,9 @@ class MultipleLinearRegression(Model):
     Normal Equation method.
     """
 
+    def __init__(self) -> None:
+        super().__init__()
+
     def _check_inversion(self, matrix) -> bool:
         """
         Checks if a matrix is invertible by calculating its determinant.
@@ -53,6 +56,7 @@ class MultipleLinearRegression(Model):
         next_product = np.matmul(invert, transposed_observation_matrix)
         weights = np.matmul(next_product, ground_truth)
         self._parameters["weights"] = weights
+        self._data = observation
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
         """
@@ -68,3 +72,13 @@ class MultipleLinearRegression(Model):
         observation_matrix = np.c_[observation, np.ones(observation.shape[0])]
         return observation_matrix.dot(self._parameters["weights"])
     
+    def to_artifact(self, name) -> Artifact:
+        artifact = Artifact(name,
+                            "asset_path",
+                            "1.0.0",
+                            self._data.encode(),
+                            "multiple linear regression",
+                            self._parameters,
+                            ["regression"]
+                            )
+        return artifact

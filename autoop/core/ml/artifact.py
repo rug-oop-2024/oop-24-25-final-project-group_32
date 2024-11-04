@@ -1,5 +1,5 @@
 import base64
-
+import pandas as pd
 
 class Artifact:
     def __init__(
@@ -48,7 +48,7 @@ class Artifact:
         return self._data
 
     def save(self, new_data) -> None:
-        self._data = new_data.encode()
+        self._data = new_data
         return self.read
 
     def get(self):

@@ -1,6 +1,7 @@
 from autoop.core.ml.model.model import Model
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from autoop.core.ml.artifact import Artifact
 
 class RandomForest(Model):
     """
@@ -12,8 +13,8 @@ class RandomForest(Model):
     Normal Equation method.
     """
     def __init__(self):
+        super().__init__()
         self._model = RandomForestClassifier()
-        self._parameters = {}
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """
@@ -28,6 +29,7 @@ class RandomForest(Model):
         self._parameters = {
             "parameters": self._model.get_params()
         }
+        self._data = observation
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
         """
@@ -40,3 +42,13 @@ class RandomForest(Model):
         """
         return self._model.predict(observation)
         
+    def to_artifact(self, name) -> Artifact:
+        artifact = Artifact(name,
+                            "asset_path",
+                            "1.0.0",
+                            self._data.encode(),
+                            "random forest classifier",
+                            self._parameters,
+                            ["classification"]
+                            )
+        return artifact
