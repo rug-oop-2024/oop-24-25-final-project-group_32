@@ -50,7 +50,8 @@ Pipeline(
     @property
     def artifacts(self) -> List[Artifact]:
         """
-        Used to get the artifacts generated during the pipeline execution to be saved
+        Used to get the artifacts generated
+        during the pipeline execution to be saved
         """
         artifacts = []
         for name, artifact in self._artifacts.items():
@@ -99,7 +100,12 @@ Pipeline(
     def _train(self):
         X = self._compact_vectors(self._train_X)
         Y = self._train_y
-        self._model.fit(X, Y)
+        self._metrics_results_training = []
+        training = self._model.fit(X, Y)
+        for metric in self._metrics:
+            result_training = metric.evaluate(training, Y)
+            self._metrics_results_training.append((metric, result_training))
+        self._training = training
 
     def _evaluate(self):
         X = self._compact_vectors(self._test_X)
@@ -117,9 +123,8 @@ Pipeline(
         self._train()
         self._evaluate()
         return {
-            "metrics": self._metrics_results,
+            "metrics after training": self._metrics_results_training,
+            "training": self._training,
+            "metrics after prediction": self._metrics_results,
             "predictions": self._predictions,
         }
-        
-
-    
