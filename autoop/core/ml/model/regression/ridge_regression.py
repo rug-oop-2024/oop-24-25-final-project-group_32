@@ -3,6 +3,7 @@ from autoop.core.ml.artifact import Artifact
 from autoop.core.ml.model.model import Model
 import numpy as np
 
+
 class RidgeRegression(Model):
     def __init__(self):
         super().__init__()

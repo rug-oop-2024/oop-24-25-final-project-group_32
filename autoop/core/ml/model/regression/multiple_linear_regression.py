@@ -2,6 +2,7 @@ from autoop.core.ml.model.model import Model
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 
+
 class MultipleLinearRegression(Model):
     """
     Multiple Linear Regression model for predicting a continuous
@@ -71,7 +72,7 @@ class MultipleLinearRegression(Model):
         # Add a column of ones for the intercept term (bias)
         observation_matrix = np.c_[observation, np.ones(observation.shape[0])]
         return observation_matrix.dot(self._parameters["weights"])
-    
+
     def to_artifact(self, name) -> Artifact:
         artifact = Artifact(name,
                             "asset_path",

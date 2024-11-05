@@ -3,8 +3,6 @@ import numpy as np
 from copy import deepcopy
 import pandas as pd
 
-from autoop.core.ml.dataset import Dataset
-
 
 class Feature():
     def __init__(self,
@@ -20,10 +18,6 @@ class Feature():
     @name.setter
     def name(self, value: str):
         self._name = value
-
-    # @property
-    # def dataset(self):
-    #     return deepcopy(self._dataset)
 
     @property
     def type(self):
