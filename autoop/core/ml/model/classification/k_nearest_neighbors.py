@@ -4,6 +4,7 @@ from copy import deepcopy
 from autoop.core.ml.model.model import Model
 from autoop.core.ml.artifact import Artifact
 
+
 class KNearestNeighbors(Model):
     def __init__(self, k: int = 3):
         """
@@ -26,7 +27,7 @@ class KNearestNeighbors(Model):
         return deepcopy(self._k)
 
     @k.setter
-    def set_k(self, k: int) -> None:
+    def k(self, k: int) -> None:
         """
         Setter for the value of k.
         Args:
@@ -92,10 +93,11 @@ class KNearestNeighbors(Model):
         k_indices = np.argsort(difference)[:self.k]
         k_nearest_labels = [self._parameters["ground_truth"][index].tolist()
                             for index in k_indices]
-        k_nearest_labels = [''.join(label) for label in k_nearest_labels]
+        print(k_nearest_labels)
+        k_nearest_labels = [str(label) for label in k_nearest_labels]
         prediction = Counter(k_nearest_labels).most_common()
         return prediction[0][0]
-    
+
     def to_artifact(self, name) -> Artifact:
         artifact = Artifact(name,
                             "asset_path",
