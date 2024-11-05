@@ -3,7 +3,8 @@ from autoop.core.ml.model.model import Model
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 
-class LogisticRegression(Model):
+
+class WrapperLogisticRegression(Model):
     def __init__(self):
         super().__init__()
         self._model = LogisticRegression()
@@ -33,7 +34,7 @@ class LogisticRegression(Model):
             np.ndarray: A 1D array of predicted target values.
         """
         return self._model.predict(observation)
-    
+
     def to_artifact(self, name) -> Artifact:
         artifact = Artifact(name,
                             "asset_path",

@@ -3,7 +3,8 @@ from sklearn.linear_model import Lasso
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 
-class Lasso(Model):
+
+class LassoWrapper(Model):
     """
     Lasso Regression model using L1 regularization.
     Lasso regression is a linear model that applies L1 regularization,
@@ -53,7 +54,7 @@ class Lasso(Model):
         """
         predictions = self.lasso.predict(observations)
         return predictions
-    
+
     def to_artifact(self, name) -> Artifact:
         artifact = Artifact(name,
                             "asset_path",

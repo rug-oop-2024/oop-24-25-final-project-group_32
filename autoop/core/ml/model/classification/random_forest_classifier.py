@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from autoop.core.ml.artifact import Artifact
 
+
 class RandomForest(Model):
     """
     Random Forest Classifier model for predicting a categorical
@@ -41,7 +42,7 @@ class RandomForest(Model):
             np.ndarray: A 1D array of predicted target values.
         """
         return self._model.predict(observation)
-        
+
     def to_artifact(self, name) -> Artifact:
         artifact = Artifact(name,
                             "asset_path",
