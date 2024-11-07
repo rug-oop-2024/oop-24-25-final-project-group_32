@@ -3,6 +3,7 @@ import pandas as pd
 
 from app.core.system import AutoMLSystem
 from autoop.core.ml.dataset import Dataset
+from app.Modelling.model_pipeline import CreatePipeline
 
 
 st.set_page_config(page_title="Modelling", page_icon="📈")
@@ -16,9 +17,6 @@ st.write("# ⚙ Modelling")
 write_helper_text("In this section, you can design \
                   a machine learning pipeline to train a model on a dataset.")
 
-automl = AutoMLSystem.get_instance()
+create_pipeline = CreatePipeline()
 
-datasets = automl.registry.list(type="dataset")
-
-# your code here
-st.selectbox("select your dataset", datasets)
+create_pipeline.choose_data()

@@ -15,6 +15,7 @@ class MultipleLinearRegression(Model):
 
     def __init__(self) -> None:
         super().__init__()
+        self._type = "MultipleLinearRegression"
 
     def _check_inversion(self, matrix) -> bool:
         """

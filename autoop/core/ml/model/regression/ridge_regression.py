@@ -8,6 +8,7 @@ class RidgeRegression(Model):
     def __init__(self):
         super().__init__()
         self._model = Ridge()
+        self._type = "RidgeRegression"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """
