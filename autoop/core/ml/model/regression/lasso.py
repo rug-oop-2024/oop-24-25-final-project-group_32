@@ -21,7 +21,8 @@ class LassoWrapper(Model):
         IMLasso.
         """
         super().__init__()
-        self.lasso = Lasso()
+        self._lasso = Lasso()
+        self._type = "lassoRegression"
 
     def fit(self, observations: np.ndarray, ground_truth: np.ndarray) -> None:
         """
@@ -36,7 +37,7 @@ class LassoWrapper(Model):
             ground_truth (np.ndarray): A 1D array of target values
             corresponding to the observations.
         """
-        self.lasso.fit(observations, ground_truth)
+        self._lasso.fit(observations, ground_truth)
         self._parameters = {
             "weights": self.lasso.coef_,
             "intercept": self.lasso.intercept_
@@ -52,7 +53,7 @@ class LassoWrapper(Model):
         Returns:
             np.ndarray: A 1D array of predicted target values.
         """
-        predictions = self.lasso.predict(observations)
+        predictions = self._lasso.predict(observations)
         return predictions
 
     def to_artifact(self, name) -> Artifact:

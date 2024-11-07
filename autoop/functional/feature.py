@@ -13,6 +13,7 @@ def detect_feature_types(dataset: Dataset) -> List[Feature]:
     """
     feature_list = []
     data = dataset.read()
+    print(type(data))
     for column in data.columns:
         if data[column].dtype == 'object':
             feature = Feature(name=column, type='categorical')
