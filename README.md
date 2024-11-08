@@ -159,8 +159,8 @@ If you did not implement the feature
 | `ML/feature`                          | NF           |  Luca                |    X    | |
 | `ML/metric`                           | NF           |  Maurice             |    X    | |
 | `ML/metric/extensions`                | FN           |  Maurice             |    X    | |
-| `ML/model`                            | NF           |                      |         | |
-| `ML/model/extensions`                 | FN           |                      |         | |
+| `ML/model`                            | NF           |  Luca                |    X    | |
+| `ML/model/extensions`                 | FN           |  Luca                |    X    | |
 | `ML/pipeline/evaluation`              | FN           |  Maurice             |    X    | | 
 | `ST/page/datasets`                    | NF           |                      |         | |
 | `ST/datasets/management/create`       | FN           |                      |         | |
