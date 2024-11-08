@@ -1,112 +1,132 @@
-
 import json
 from typing import Tuple, List, Union
 import os
-
 from autoop.core.storage import Storage
 
 
-class Database():
-    def __init__(self, storage: Storage):
+class Database:
+    """
+    Database class for managing collections of data using a storage backend.
+    """
+
+    def __init__(self, storage: Storage) -> None:
+        """
+        Initializes the Database with a storage backend and
+        loads existing data.
+
+        Args:
+            storage (Storage): The storage backend to use for data persistence.
+        """
         self._storage = storage
         self._data = {}
         self._load()
 
     @property
-    def storage(self):
+    def storage(self) -> Storage:
+        """
+        Gets the storage backend used by the Database.
+
+        Returns:
+            Storage: The storage backend instance.
+        """
         return self._storage
 
     def set(self, collection: str, id: str, entry: dict) -> dict:
-        """Set a key in the database
+        """
+        Sets a key-value pair in the database.
+
         Args:
-            collection (str): The collection to store the data in
-            id (str): The id of the data
-            entry (dict): The data to store
+            collection (str): The collection in which to store the data.
+            id (str): The identifier for the data entry.
+            entry (dict): The data to store.
+
         Returns:
-            dict: The data that was stored
+            dict: The data that was stored.
         """
         assert isinstance(entry, dict), "Data must be a dictionary"
         assert isinstance(collection, str), "Collection must be a string"
         assert isinstance(id, str), "ID must be a string"
-        print(self._data)
-        if not self._data.get(collection, None):
+
+        if not self._data.get(collection):
             self._data[collection] = {}
         self._data[collection][id] = entry
-        print(self._data)
         self._persist()
         return entry
 
     def get(self, collection: str, id: str) -> Union[dict, None]:
-        """Get a key from the database
-        Args:
-            collection (str): The collection to get the data from
-            id (str): The id of the data
-        Returns:
-            Union[dict, None]: The data that was stored,
-            or None if it doesn't exist
         """
-        print(self._data)
-        if not self._data.get(collection, None):
-            return None
-        return self._data[collection].get(id, None)
+        Gets a value from the database.
 
-    def delete(self, collection: str, id: str):
-        """Delete a key from the database
         Args:
-            collection (str): The collection to delete the data from
-            id (str): The id of the data
+            collection (str): The collection to retrieve data from.
+            id (str): The identifier of the data entry.
+
         Returns:
-            None
+            Union[dict, None]: The retrieved data, or None if not found.
         """
-        print("I am nowhere")
-        if not self._data.get(collection, None):
+        if not self._data.get(collection):
+            return None
+        return self._data[collection].get(id)
+
+    def delete(self, collection: str, id: str) -> None:
+        """
+        Deletes a key-value pair from the database.
+
+        Args:
+            collection (str): The collection to delete data from.
+            id (str): The identifier of the data entry to delete.
+        """
+        if not self._data.get(collection):
             return
-        if self._data[collection].get(id, None):
+        if self._data[collection].get(id):
             del self._data[collection][id]
         self._persist()
 
     def list(self, collection: str) -> List[Tuple[str, dict]]:
-        """Lists all data in a collection
-        Args:
-            collection (str): The collection to list the data from
-        Returns:
-            List[Tuple[str, dict]]: A list of tuples containing the id and
-            data for each item in the collection
         """
-        print(self._data)
-        if not self._data.get(collection, None):
-            print("shenanigans")
+        Lists all data entries in a collection.
+
+        Args:
+            collection (str): The collection to list data from.
+
+        Returns:
+            List[Tuple[str, dict]]: A list of tuples with
+            each item's id and data.
+        """
+        if not self._data.get(collection):
             return []
-        print("other shenanigans")
         return [(id, data) for id, data in self._data[collection].items()]
 
-    def refresh(self):
-        """Refresh the database by loading the data from storage"""
+    def refresh(self) -> None:
+        """
+        Refreshes the database by reloading data from the storage backend.
+        """
         self._load()
 
-    def _persist(self):
-        """Persist the data to storage"""
+    def _persist(self) -> None:
+        """
+        Persists the current state of the database to the storage backend.
+        """
         for collection, data in self._data.items():
             if not data:
                 continue
             for id, item in data.items():
                 self._storage.save(json.dumps(item).encode(),
                                    f"{collection}{os.sep}{id}")
-
-        # for things that were deleted, we need to remove them from the storage
         keys = self._storage.list("")
         for key in keys:
             collection, id = key.split(os.sep)[-2:]
-            if not self._data.get(collection, id):
+            if not self._data.get(collection, {}).get(id):
                 self._storage.delete(f"{collection}{os.sep}{id}")
 
-    def _load(self):
-        """Load the data from storage"""
+    def _load(self) -> None:
+        """
+        Loads data from the storage backend into the in-memory database.
+        """
         self._data = {}
         for key in self._storage.list(""):
             collection, id = key.split(os.sep)[-2:]
             data = self._storage.load(f"{collection}{os.sep}{id}")
-            # Ensure the collection exists in the dictionary
             if collection not in self._data:
                 self._data[collection] = {}
             self._data[collection][id] = json.loads(data.decode())

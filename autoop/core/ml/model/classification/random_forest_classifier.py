@@ -14,6 +14,10 @@ class RandomForest(Model):
     Normal Equation method.
     """
     def __init__(self):
+        """
+        Initializes the random forest model by creating an
+        instance of RandomForest.
+        """
         super().__init__()
         self._model = RandomForestClassifier()
         self._type = "RandomForestClassifier"
@@ -45,6 +49,17 @@ class RandomForest(Model):
         return self._model.predict(observation)
 
     def to_artifact(self, name) -> Artifact:
+        """
+        Converts the model instance into an Artifact for storage or tracking.
+
+        Args:
+            name (str): The name to assign to the Artifact.
+
+        Returns:
+            Artifact: An Artifact instance representing the model,
+            including its asset path, version, encoded data,
+            type, parameters, and tags.
+        """
         artifact = Artifact(name,
                             "asset_path",
                             "1.0.0",

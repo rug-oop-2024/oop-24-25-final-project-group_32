@@ -6,6 +6,10 @@ import numpy as np
 
 class WrapperLogisticRegression(Model):
     def __init__(self):
+        """
+        Initializes the wrapper logistic regression model by creating an
+        instance of WrapperLogisticRegression.
+        """
         super().__init__()
         self._model = LogisticRegression()
         self._type = "LogisticRegression"
@@ -37,6 +41,17 @@ class WrapperLogisticRegression(Model):
         return self._model.predict(observation)
 
     def to_artifact(self, name) -> Artifact:
+        """
+        Converts the model instance into an Artifact for storage or tracking.
+
+        Args:
+            name (str): The name to assign to the Artifact.
+
+        Returns:
+            Artifact: An Artifact instance representing the model,
+            including its asset path, version, encoded data,
+            type, parameters, and tags.
+        """
         artifact = Artifact(name,
                             "asset_path",
                             "1.0.0",
