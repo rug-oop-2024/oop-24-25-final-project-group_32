@@ -1,7 +1,5 @@
 from typing import Literal
-import numpy as np
 from copy import deepcopy
-import pandas as pd
 
 
 class Feature():
@@ -28,4 +26,4 @@ class Feature():
         self._type = value
 
     def __str__(self):
-        return f"The column is named {self._name} and contains {self._type} variables."
+        return f"The column {self._name} contains {self._type} variables."

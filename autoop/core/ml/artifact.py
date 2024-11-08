@@ -1,6 +1,5 @@
 import base64
-import pandas as pd
-from typing import Literal
+
 
 class Artifact:
     def __init__(
@@ -42,7 +41,7 @@ class Artifact:
     @property
     def name(self) -> str:
         return self._name
-    
+
     @name.setter
     def name(self, name: str) -> None:
         self._name = name
@@ -54,7 +53,7 @@ class Artifact:
     @property
     def version(self) -> str:
         return self._version
-    
+
     @version.setter
     def version(self,   version: str) -> None:
         self._version = version
@@ -62,7 +61,7 @@ class Artifact:
     @property
     def data(self) -> bytes:
         return self._data
-            
+
     @property
     def metadata(self) -> dict:
         return self._metadata
@@ -70,7 +69,7 @@ class Artifact:
     @property
     def type(self) -> str:
         return self._type
-    
+
     @type.setter
     def type(self, type: str) -> None:
         self._type = type
@@ -78,7 +77,7 @@ class Artifact:
     @property
     def tags(self) -> list:
         return self._tags
-    
+
     @tags.setter
     def tags(self, tags: list) -> None:
         self._tags = tags
@@ -89,14 +88,10 @@ class Artifact:
         return f"{encoded_path}:{self.version}"
 
     def read(self) -> bytes:
+        if not self.data:
+            raise ValueError("No data available in the artifact.")
         return self._data
 
-    def save(self, new_data) -> None:
+    def save(self, new_data: bytes) -> None:
         self._data = new_data
         return self.read
-
-    def get(self, argument):
-        # Look into pipeline what this functions does
-        # Looks like it should get the type
-        # Can be that it should get anything when specified
-        pass
