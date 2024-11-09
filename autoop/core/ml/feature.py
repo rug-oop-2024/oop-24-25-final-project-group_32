@@ -61,4 +61,5 @@ class Feature:
         Returns:
             str: A description of the feature's name and type.
         """
-        return f"The column {self._name} contains {self._type} variables."
+        return self.name
+

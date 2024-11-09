@@ -31,11 +31,9 @@ class ArtifactRegistry():
             "metadata": artifact.metadata,
             "type": artifact.type,
         }
-        print("it gets here")
         self._database.set("artifacts", artifact.id, entry)
 
     def list(self, type: str = None) -> List[Artifact]:
-        print("does it")
         entries = self._database.list("artifacts")
         artifacts = []
         for id, data in entries:
@@ -81,10 +79,6 @@ class AutoMLSystem:
 
     @staticmethod
     def get_instance():
-        if AutoMLSystem._instance is None:
-            print("its none")
-        else:
-            print("Its not none")
         if AutoMLSystem._instance is None:
             AutoMLSystem._instance = AutoMLSystem(
                 LocalStorage(os.path.join(".", "assets", "objects")),
