@@ -15,6 +15,17 @@ REGRESSION_METRICS = [
 
 
 def get_metrics(type: str) -> list:
+    """
+    Getter for the metrics.
+
+    Args:
+        type (str): A string that decides which
+        metrics are available for the inputted feature
+
+    Returns:
+        list: The list of available metrics.
+    """
+
     if type == "classification":
         return ClASSIFICATION_METRICS
     elif type == "regression":

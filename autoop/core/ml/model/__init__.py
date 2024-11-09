@@ -1,3 +1,4 @@
+"""The source module contains all the models."""
 from autoop.core.ml.model.model import (
     Model)
 from autoop.core.ml.model.regression.multiple_linear_regression import (
