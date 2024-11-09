@@ -20,8 +20,8 @@ class CreatePipeline:
         self._features: list[Feature] = None
         self._target_feature: Feature = None
         self._input_features: list[Feature] = None
-        self._model: Model = None
-        self._metric: list[Metric] = None
+        self._model: str = None
+        self._metric: list[str] = None
         self._split: float = None
 
     @staticmethod
@@ -86,21 +86,23 @@ class CreatePipeline:
 
     @st.dialog("Summary", width = "large")
     def summary(self) -> None:
-        st.write(f"Dataset: {self._data.name}")
-        st.write(f"Target feature: {self._target_feature.name}")
-        st.write(f"Input features: {[feature.name for feature in self._input_features]}")
-        st.write(f"Model: {self._model}")
-        st.write(f"Metrics: {[metric for metric in self._metric]}")
-        st.write(f"Split ratio: {self._split}")
+        st.write(f"**Dataset**: {self._data.name}")
+        st.write(f"**Target feature**: {self._target_feature.name}")
+        st.write(f"**Input features**: {', '.join([feature.name for feature in self._input_features])}")
+        st.write(f"**Model**: {self._model}")
+        st.write(f"**Metrics**: {', '.join([metric for metric in self._metric])}")
+        st.write(f"**Split ratio**: {self._split}")
         if st.button("Create"):
             self.create_pipeline()
 
     def create_pipeline(self) -> None:
-        pipeline = Pipeline(metrics=self._metric,
+        pipeline = Pipeline(metrics=[get_metric(metric) for metric in self._metric],
                             dataset=self._data,
                             model=get_model(self._model),
                             input_features=self._input_features,
                             target_feature=self._target_feature,
                             split=self._split)
         st.write("Pipeline created and saved to artifact registry")
-        pipeline.execute()
+        results = pipeline.execute()
+        for result in results:
+            st.write(results[result])

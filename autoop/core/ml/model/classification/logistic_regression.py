@@ -10,7 +10,7 @@ class WrapperLogisticRegression(Model):
         Initializes the wrapper logistic regression model by creating an
         instance of WrapperLogisticRegression.
         """
-        super().__init__(type)
+        super().__init__()
         self._model = LogisticRegression()
         self._type = "classification"
 

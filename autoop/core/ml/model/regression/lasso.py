@@ -39,8 +39,8 @@ class LassoWrapper(Model):
         """
         self._lasso.fit(observations, ground_truth)
         self._parameters = {
-            "weights": self.lasso.coef_,
-            "intercept": self.lasso.intercept_
+            "weights": self._lasso.coef_,
+            "intercept": self._lasso.intercept_
         }
 
     def predict(self, observations: np.ndarray) -> np.ndarray:
@@ -54,7 +54,7 @@ class LassoWrapper(Model):
             np.ndarray: A 1D array of predicted target values.
         """
         predictions = self._lasso.predict(observations)
-        return predictions
+        return predictions.reshape(-1, 1)
 
     def to_artifact(self, name) -> Artifact:
         """
