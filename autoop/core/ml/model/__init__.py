@@ -9,8 +9,8 @@ from autoop.core.ml.model.regression.ridge_regression import (
     RidgeRegression)
 from autoop.core.ml.model.regression.lasso import (
     Lasso)
-from autoop.core.ml.model.classification.logistic_regression import (
-    LogisticRegression)
+from autoop.core.ml.model.classification.linear_SVC import (
+    WrapperLinearSVC)
 from autoop.core.ml.model.classification.k_nearest_neighbors import (
     KNearestNeighbors)
 
@@ -24,7 +24,7 @@ REGRESSION_MODELS = [
 
 CLASSIFICATION_MODELS = [
     "RandomForestClassifier",
-    "LogisticRegression",
+    "linearSVC",
     "KNN",
 ]
 
@@ -63,7 +63,7 @@ def get_model(model_name: str) -> Optional[Model]:
     elif model_name in CLASSIFICATION_MODELS:
         if model_name == "RandomForestClassifier":
             return RandomForest()
-        if model_name == "LogisticRegression":
-            return LogisticRegression()
+        if model_name == "linearSVC":
+            return WrapperLinearSVC()
         if model_name == "KNN":
             return KNearestNeighbors()

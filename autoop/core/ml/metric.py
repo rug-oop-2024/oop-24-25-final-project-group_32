@@ -1,18 +1,24 @@
 from abc import ABC, abstractmethod
 import numpy as np
 
-METRICS = [
+ClASSIFICATION_METRICS = [
     "accuracy",
+    "logarithmic_loss",
+    "macro_average"
+]
+
+REGRESSION_METRICS = [
     "mean_squared_error",
     "root_mean_squared_error",
-    "logarithmic_loss",
-    "precision",
     "r_squared"
 ]
 
 
-def get_metrics() -> list:
-    return METRICS
+def get_metrics(type: str) -> list:
+    if type == "classification":
+        return ClASSIFICATION_METRICS
+    elif type == "regression":
+        return REGRESSION_METRICS
 
 
 class Metric(ABC):
@@ -106,6 +112,66 @@ class Accuracy(Metric):
         return correct / len(ground_truth)
 
 
+class LogarithmicLoss(Metric):
+    """
+    Logarithmic Loss metric for classification with probabilistic outputs.
+    """
+
+    def evaluate(self,
+                 prediction: np.ndarray,
+                 ground_truth: np.ndarray
+                 ) -> float:
+        """
+        Calculate the logarithmic loss (log loss)
+        between predictions and ground truth.
+
+        Args:
+            prediction (np.ndarray): Predicted probabilities
+            for the positive class.
+            ground_truth (np.ndarray): True binary class labels.
+
+        Returns:
+            float: Logarithmic loss value.
+        """
+        self._check_arrays(predictions=prediction, ground_truth=ground_truth)
+
+        log_loss = np.sum(
+            ground_truth * np.log(prediction) +
+            (1 - ground_truth) * np.log(1 - prediction)
+        )
+
+        try:
+            return -log_loss / len(ground_truth)
+        except ZeroDivisionError:
+            print("You cannot divide by zero")
+
+
+class MacroAveragePrecision(Metric):
+    def evaluate(self, prediction: np.ndarray,
+                 ground_truth: np.ndarray) -> float:
+        """
+        Computes the macro-average precision score
+        Args:
+            y_true (np.ndarray): The ground truth values
+            y_pred (np.ndarray): The predicted values
+        Returns:
+            float: The computed metric score
+        """
+        unique_labels = np.unique(ground_truth)
+        precision_per_class = []
+        for label in unique_labels:
+            correct = np.sum((ground_truth == label) &
+                             (prediction == label))
+            incorrect = np.sum((ground_truth != label) &
+                               (prediction == label))
+            try:
+                precision = correct / (correct + incorrect)
+            except ZeroDivisionError:
+                precision = 0
+            precision_per_class.append(precision)
+        return np.mean(precision_per_class)
+
+
 class MeanSquaredError(Metric):
     """
     Mean Squared Error (MSE) metric for regression.
@@ -153,72 +219,6 @@ class RootMeanSquaredError(Metric):
         self._check_arrays(predictions=prediction, ground_truth=ground_truth)
         errors = (prediction - ground_truth) ** 2
         return np.sqrt(np.mean(errors))
-
-
-class LogarithmicLoss(Metric):
-    """
-    Logarithmic Loss metric for classification with probabilistic outputs.
-    """
-
-    def evaluate(self,
-                 prediction: np.ndarray,
-                 ground_truth: np.ndarray
-                 ) -> float:
-        """
-        Calculate the logarithmic loss (log loss)
-        between predictions and ground truth.
-
-        Args:
-            prediction (np.ndarray): Predicted probabilities
-            for the positive class.
-            ground_truth (np.ndarray): True binary class labels.
-
-        Returns:
-            float: Logarithmic loss value.
-        """
-        self._check_arrays(predictions=prediction, ground_truth=ground_truth)
-
-        log_loss = np.sum(
-            ground_truth * np.log(prediction) +
-            (1 - ground_truth) * np.log(1 - prediction)
-        )
-
-        try:
-            return -log_loss / len(ground_truth)
-        except ZeroDivisionError:
-            print("You cannot divide by zero")
-
-
-class Precision(Metric):
-    """
-    Precision metric for binary classification.
-    """
-
-    def evaluate(self,
-                 prediction: np.ndarray,
-                 ground_truth: np.ndarray
-                 ) -> float:
-        """
-        Calculate the precision score between predictions and ground truth.
-
-        Args:
-            prediction (np.ndarray): Predicted binary class labels.
-            ground_truth (np.ndarray): True binary class labels.
-
-        Returns:
-            float: Precision score as a ratio of
-            true positives to predicted positives
-            with a cor
-        """
-
-        self._check_arrays(predictions=prediction, ground_truth=ground_truth)
-
-        true_positives = np.sum((prediction == 1) & (ground_truth == 1))
-        false_positives = np.sum((prediction == 1) & (ground_truth == 0))
-        try:
-            return true_positives / (true_positives + false_positives)
-        except ZeroDivisionError:
-            print("Cannot divide by Zero")
 
 
 class RSquared(Metric):
@@ -271,9 +271,9 @@ def get_metric(name: str) -> Metric:
         return RootMeanSquaredError()
     elif name == "logarithmic_loss":
         return LogarithmicLoss()
-    elif name == "precision":
-        return Precision()
     elif name == "r_squared":
         return RSquared()
+    elif name == "macro_average":
+        return MacroAveragePrecision()
     else:
         raise ValueError(f"Metric '{name}' is not supported.")

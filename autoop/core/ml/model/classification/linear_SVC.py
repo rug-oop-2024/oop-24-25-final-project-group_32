@@ -1,17 +1,17 @@
-from sklearn.linear_model import LogisticRegression
+from sklearn.svm import LinearSVC
 from autoop.core.ml.model.model import Model
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 
 
-class WrapperLogisticRegression(Model):
+class WrapperLinearSVC(Model):
     def __init__(self):
         """
         Initializes the wrapper logistic regression model by creating an
         instance of WrapperLogisticRegression.
         """
         super().__init__()
-        self._model = LogisticRegression()
+        self._model = LinearSVC()
         self._type = "classification"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
@@ -56,7 +56,7 @@ class WrapperLogisticRegression(Model):
                             "asset_path",
                             "1.0.0",
                             self._data.encode(),
-                            "logistic regression",
+                            "Linear SVC",
                             self._parameters,
                             ["classification"]
                             )
