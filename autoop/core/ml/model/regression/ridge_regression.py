@@ -5,13 +5,15 @@ import numpy as np
 
 
 class RidgeRegression(Model):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """
         Initializes ridge regression model by creating an
         instance of RidgeRegression.
         """
         super().__init__()
-        self._model = Ridge()
+        self._model = Ridge(*args, **kwargs)
+        new_parameters = self._model.get_params()
+        self.parameters = new_parameters
         self._type = "regression"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
@@ -24,8 +26,9 @@ class RidgeRegression(Model):
             corresponding to the observations.
         """
         self._model.fit(observation, ground_truth)
-        self._parameters = {
-            "weights": self._model.get_params()
+        self.parameters = {
+            "coefficients": np.array(self._model.coef_),
+            "intercept": np.atleast_1d(self._model.intercept_),
         }
         self._data = observation
 
@@ -52,12 +55,13 @@ class RidgeRegression(Model):
             including its asset path, version, encoded data,
             type, parameters, and tags.
         """
-        artifact = Artifact(name,
-                            "asset_path",
-                            "1.0.0",
-                            self._data.encode(),
-                            "ridge regression",
-                            self._parameters,
-                            ["regression"]
-                            )
+        artifact = Artifact(
+            name=name,
+            asset_path="asset_path",
+            version="1.0.0",
+            encoded_data=self._data.tobytes(),
+            model_type="k nearest",
+            parameters=self._parameters,
+            tags=["classification"]
+        )
         return artifact

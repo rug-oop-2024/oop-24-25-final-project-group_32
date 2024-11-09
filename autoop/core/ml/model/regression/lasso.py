@@ -15,13 +15,15 @@ class LassoWrapper(Model):
         _parameters (dict): Dictionary to store the fitted model parameters
         (weights and intercept).
     """
-    def __init__(self) -> None:
+    def __init__(self, *args, alpha=0.01, **kwargs) -> None:
         """
         Initializes the Lasso regression model by creating an instance of
         IMLasso.
         """
         super().__init__()
-        self._lasso = Lasso()
+        self._lasso = Lasso(*args, alpha=alpha, **kwargs)
+        new_parameters = self._lasso.get_params()
+        self.parameters = new_parameters
         self._type = "regression"
 
     def fit(self, observations: np.ndarray, ground_truth: np.ndarray) -> None:
@@ -38,10 +40,12 @@ class LassoWrapper(Model):
             corresponding to the observations.
         """
         self._lasso.fit(observations, ground_truth)
-        self._parameters = {
-            "weights": self._lasso.coef_,
-            "intercept": self._lasso.intercept_
+        self.parameters = {
+            "coefficients": np.array(self._model.coef_),
+            "intercept": np.atleast_1d(self._model.intercept_),
         }
+
+        self._data = observations
 
     def predict(self, observations: np.ndarray) -> np.ndarray:
         """
@@ -68,12 +72,13 @@ class LassoWrapper(Model):
             including its asset path, version, encoded data,
             type, parameters, and tags.
         """
-        artifact = Artifact(name,
-                            "asset_path",
-                            "1.0.0",
-                            self._data.encode(),
-                            "lasso regression",
-                            self._parameters,
-                            ["regression"]
-                            )
+        artifact = Artifact(
+            name=name,
+            asset_path="asset_path",
+            version="1.0.0",
+            encoded_data=self._data.tobytes(),
+            model_type="k nearest",
+            parameters=self._parameters,
+            tags=["classification"]
+        )
         return artifact
