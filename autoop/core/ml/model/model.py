@@ -9,7 +9,7 @@ class Model(ABC):
     """
     Base class for the models.
     """
-    def __init__(self, type: str) -> None:
+    def __init__(self) -> None:
         """
         Initialize the Model base class.
 
@@ -17,7 +17,6 @@ class Model(ABC):
             type (str): The type of model.
         """
         self._parameters: Dict = {}
-        self._type: str = type
 
     @property
     def parameters(self) -> Dict:

@@ -47,20 +47,17 @@ def get_model(model_name: str) -> Optional[Model]:
         print(f"No such model `{model_name}` found.")
         return None
 
-    type_: str = ("regression" if
-                  model_name in REGRESSION_MODELS else "classification")
-
     if model_name in REGRESSION_MODELS:
         if model_name == "MultipleLinearRegression":
-            return MultipleLinearRegression(type=type_)
+            return MultipleLinearRegression()
         if model_name == "RidgeRegression":
-            return RidgeRegression(type=type_)
+            return RidgeRegression()
         if model_name == "lassoRegression":
-            return Lasso(type=type_)
+            return Lasso()
     elif model_name in CLASSIFICATION_MODELS:
         if model_name == "RandomForestClassifier":
-            return RandomForest(type=type_)
+            return RandomForest()
         if model_name == "LogisticRegression":
-            return LogisticRegression(type=type_)
+            return LogisticRegression()
         if model_name == "KNN":
-            return KNearestNeighbors(type=type_)
+            return KNearestNeighbors()

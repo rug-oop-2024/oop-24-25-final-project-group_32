@@ -20,7 +20,7 @@ class RandomForest(Model):
         """
         super().__init__()
         self._model = RandomForestClassifier()
-        self._type = "RandomForestClassifier"
+        self._type = "classification"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """
