@@ -58,12 +58,12 @@ class Pipeline:
         self._split = split
         if (target_feature.type == "categorical"
                 and model.type != "classification"):
-            raise ValueError(
-                "Model type must be classification for categorical feature")
+            raise ValueError(f"Invalid model type {model.type}. Model type"
+                             "must be classification for categorical feature")
         if (target_feature.type == "continuous"
                 and model.type != "regression"):
-            raise ValueError(
-                "Model type must be regression for continuous feature")
+            raise ValueError(f"Invalid model type {model.type}.Model type must"
+                             "be regression for continuous feature")
 
     def __str__(self) -> str:
         return f"""
@@ -174,16 +174,20 @@ class Pipeline:
 
     def _evaluate(self, x=None, y=None, training=False) -> None:
         """
-        Evaluates the model using the provided dataset (training or testing) 
+        Evaluates the model using the provided dataset (training or testing)
         and computes metrics.
 
         Args:
-            x: Feature vectors to evaluate. If None and training is True, uses training data.
-            y: True labels to evaluate. If None and training is True, uses training labels.
-            training (bool): Whether to evaluate on training data (if True) 
-                            or testing data (if False).
+            x: Feature vectors to evaluate.
+            If None and training is True, uses training data.
+            y: True labels to evaluate.
+            If None and training is True, uses training labels.
+            training (bool): Whether to evaluate on training data
+                            or testing data.
         """
-        X = self._compact_vectors(x if x is not None else self._train_X if training else self._test_X)
+        X = self._compact_vectors(
+            x if x is not None else self._train_X
+            if training else self._test_X)
         Y = y if y is not None else self._train_y if training else self._test_y
 
         metrics_results = []
@@ -212,8 +216,9 @@ class Pipeline:
         self._preprocess_features()
         self._split_data()
         self._train()
-        self._evaluate(training=False)  # Evaluate on the testing dataset
-        self._evaluate(training=True)   # Evaluate on the training dataset
+        self._evaluate(training=False)
+        self._evaluate(training=True)
+
         return {
             "metrics training set prediction": self._metrics_training_results,
             "predictions training set": self._predictions_training,

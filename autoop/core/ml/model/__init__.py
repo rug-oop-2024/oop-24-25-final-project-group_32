@@ -20,13 +20,14 @@ REGRESSION_MODELS = [
     "MultipleLinearRegression",
     "RidgeRegression",
     "lassoRegression",
-]  # add your models as str here
+]
 
 CLASSIFICATION_MODELS = [
     "RandomForestClassifier",
     "LogisticRegression",
     "KNN",
-]  # add your models as str here
+]
+
 
 def get_model_types(type: str = "both") -> list:
     if type == "regression":
@@ -35,6 +36,7 @@ def get_model_types(type: str = "both") -> list:
         return CLASSIFICATION_MODELS
     elif type == "both":
         return REGRESSION_MODELS + CLASSIFICATION_MODELS
+
 
 def get_model(model_name: str) -> Optional[Model]:
     """
@@ -46,9 +48,6 @@ def get_model(model_name: str) -> Optional[Model]:
     Returns:
         Optional[Model]: An instance of the specified model, if found.
                          Returns None if no matching model is found.
-
-    Raises:
-        ValueError: If the `model_name` does not match any known models.
     """
     if model_name not in REGRESSION_MODELS + CLASSIFICATION_MODELS:
         print(f"No such model `{model_name}` found.")

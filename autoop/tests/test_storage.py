@@ -52,7 +52,6 @@ class TestStorage(unittest.TestCase):
         self.storage.save(test_bytes, key)
         self.storage.delete(key)
 
-        # Attempt to load deleted data and confirm it raises NotFoundError
         try:
             self.assertIsNone(self.storage.load(key))
         except Exception as e:

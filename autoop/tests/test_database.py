@@ -79,5 +79,5 @@ class TestDatabase(unittest.TestCase):
         key = str(random.randint(0, 100))
         value = {"key": random.randint(0, 100)}
         self.db.set("collection", key, value)
-        # collection should now contain the key
+
         self.assertIn((key, value), self.db.list("collection"))

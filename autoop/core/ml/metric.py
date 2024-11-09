@@ -10,8 +10,10 @@ METRICS = [
     "r_squared"
 ]
 
+
 def get_metrics() -> list:
     return METRICS
+
 
 class Metric(ABC):
     """
@@ -34,6 +36,34 @@ class Metric(ABC):
             float: A real number representing the metric score.
         """
         pass
+
+    def _check_arrays(
+        self, predictions: np.ndarray, ground_truth: np.ndarray
+    ) -> None:
+        """
+        Checks if the predictions and ground_truth have the same array length,
+        dimensions And if they are empty or not.
+
+        Args:
+            predictions (np.ndarray): an array of predictions
+            ground_truth (np.ndarray): an array with the ground_truth
+                (Must match number of predictions.)
+
+        Raises:
+            ValueError: If the number of predictions and
+            ground_truth are not the same.
+            ValueError: If either predictions or ground_truths is empty.
+        """
+
+        if len(predictions) != len(ground_truth):
+            raise ValueError(
+                f"The number of predictions ({len(predictions)}) must equal ",
+                f"the number of ground truth labels ({len(ground_truth)}).",
+            )
+        if len(predictions) == 0:
+            raise ValueError(
+                "Predictions and ground truth arrays cannot be empty."
+            )
 
     def __call__(self,
                  prediction: np.ndarray,
@@ -71,6 +101,7 @@ class Accuracy(Metric):
         Returns:
             float: Accuracy score as a ratio of correct predictions.
         """
+        self._check_arrays(predictions=prediction, ground_truth=ground_truth)
         correct = np.sum(prediction == ground_truth)
         return correct / len(ground_truth)
 
@@ -94,6 +125,7 @@ class MeanSquaredError(Metric):
         Returns:
             float: Mean squared error value.
         """
+        self._check_arrays(predictions=prediction, ground_truth=ground_truth)
         errors = (prediction - ground_truth) ** 2
         return np.mean(errors)
 
@@ -118,6 +150,7 @@ class RootMeanSquaredError(Metric):
         Returns:
             float: Root mean squared error value.
         """
+        self._check_arrays(predictions=prediction, ground_truth=ground_truth)
         errors = (prediction - ground_truth) ** 2
         return np.sqrt(np.mean(errors))
 
@@ -143,13 +176,17 @@ class LogarithmicLoss(Metric):
         Returns:
             float: Logarithmic loss value.
         """
-        epsilon = 1e-15
-        prediction = np.clip(prediction, epsilon, 1 - epsilon)
+        self._check_arrays(predictions=prediction, ground_truth=ground_truth)
+
         log_loss = np.sum(
             ground_truth * np.log(prediction) +
             (1 - ground_truth) * np.log(1 - prediction)
         )
-        return -log_loss / len(ground_truth)
+
+        try:
+            return -log_loss / len(ground_truth)
+        except ZeroDivisionError:
+            print("You cannot divide by zero")
 
 
 class Precision(Metric):
@@ -173,9 +210,15 @@ class Precision(Metric):
             true positives to predicted positives
             with a cor
         """
+
+        self._check_arrays(predictions=prediction, ground_truth=ground_truth)
+
         true_positives = np.sum((prediction == 1) & (ground_truth == 1))
         false_positives = np.sum((prediction == 1) & (ground_truth == 0))
-        return true_positives / (true_positives + false_positives + 1e-15)
+        try:
+            return true_positives / (true_positives + false_positives)
+        except ZeroDivisionError:
+            print("Cannot divide by Zero")
 
 
 class RSquared(Metric):
@@ -197,9 +240,14 @@ class RSquared(Metric):
         Returns:
             float: R-squared score, with 1 being perfect fit.
         """
+        self._check_arrays(predictions=prediction, ground_truth=ground_truth)
         nominator = np.sum((ground_truth - prediction) ** 2)
         denomiter = np.sum((ground_truth - np.mean(ground_truth)) ** 2)
-        return 1 - (nominator / denomiter)
+
+        try:
+            return 1 - (nominator / denomiter)
+        except ZeroDivisionError:
+            print("You cannot divide by zero")
 
 
 def get_metric(name: str) -> Metric:
