@@ -14,6 +14,10 @@ class MultipleLinearRegression(Model):
     """
 
     def __init__(self) -> None:
+        """
+        Initializes the Multiple linear regression model by creating an
+        instance of MultipleLinearRegression.
+        """
         super().__init__()
         self._type = "MultipleLinearRegression"
 
@@ -45,16 +49,14 @@ class MultipleLinearRegression(Model):
             ground_truth (np.ndarray): A 1D array of target values
             corresponding to the observations.
         """
-        # Add a column of ones for the intercept term (bias)
         observation_matrix = np.c_[observation, np.ones(observation.shape[0])]
 
-        # Compute the Normal Equation: (X^T X)⁻¹ X^T y
         transposed_observation_matrix = np.transpose(observation_matrix)
-        # Compute X^T X and check if it is invertable
+
         product = np.matmul(transposed_observation_matrix, observation_matrix)
         if self._check_inversion:
             invert = np.linalg.inv(product)
-        # Compute (X^T X)⁻¹ X^T under the name next_product
+
         next_product = np.matmul(invert, transposed_observation_matrix)
         weights = np.matmul(next_product, ground_truth)
         self._parameters["weights"] = weights
@@ -70,11 +72,21 @@ class MultipleLinearRegression(Model):
         Returns:
             np.ndarray: A 1D array of predicted target values.
         """
-        # Add a column of ones for the intercept term (bias)
         observation_matrix = np.c_[observation, np.ones(observation.shape[0])]
         return observation_matrix.dot(self._parameters["weights"])
 
     def to_artifact(self, name) -> Artifact:
+        """
+        Converts the model instance into an Artifact for storage or tracking.
+
+        Args:
+            name (str): The name to assign to the Artifact.
+
+        Returns:
+            Artifact: An Artifact instance representing the model,
+            including its asset path, version, encoded data,
+            type, parameters, and tags.
+        """
         artifact = Artifact(name,
                             "asset_path",
                             "1.0.0",

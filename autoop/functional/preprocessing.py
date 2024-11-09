@@ -1,7 +1,6 @@
 from typing import List, Tuple
 from autoop.core.ml.feature import Feature
 from autoop.core.ml.dataset import Dataset
-import pandas as pd
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
@@ -10,23 +9,24 @@ def preprocess_features(
     features: List[Feature],
     dataset: Dataset
 ) -> List[Tuple[str, np.ndarray, dict]]:
-    """Preprocess features.
+    """
+    Preprocesses features in the dataset.
 
     Args:
-        features (List[Feature]): List of features to preprocess, where each
-            feature specifies its name and type (categorical or numerical).
-        dataset (Dataset): Dataset object containing
-                           the raw data to be processed.
+        features (List[Feature]): A list of features to preprocess.
+        Each feature specifies its name and type (categorical or numerical).
+        dataset (Dataset): The dataset object containing
+        the raw data to be processed.
 
     Returns:
-        List[Tuple[str, np.ndarray, dict]]: List of tuples, each containing:
-            - str: Feature name.
-            - np.ndarray: Preprocessed feature data, shape (N, ...).
-            - dict: Metadata about the preprocessing method
-                    used for each feature.
+        List[Tuple[str, np.ndarray, dict]]: A list of tuples, each containing:
+            - str: The name of the feature.
+            - np.ndarray: The preprocessed feature data, with shape (N, ...).
+            - dict: Metadata about the preprocessing
+            method used for each feature.
     """
     results = []
-    raw = dataset.read()  # type: pd.DataFrame
+    raw = dataset.read()
     for feature in features:
         if feature.type == "categorical":
             encoder = OneHotEncoder()
@@ -42,6 +42,6 @@ def preprocess_features(
             artifact = {"type": "StandardScaler",
                         "scaler": scaler.get_params()}
             results.append((feature.name, data, artifact))
-    # Sort for consistency
+
     results = list(sorted(results, key=lambda x: x[0]))
     return results

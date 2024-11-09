@@ -7,22 +7,25 @@ from autoop.core.ml.model.classification.random_forest_classifier import (
     RandomForest)
 from autoop.core.ml.model.regression.ridge_regression import (
     RidgeRegression)
-from autoop.core.ml.model.regression.lasso import Lasso
+from autoop.core.ml.model.regression.lasso import (
+    Lasso)
 from autoop.core.ml.model.classification.logistic_regression import (
     LogisticRegression)
 from autoop.core.ml.model.classification.k_nearest_neighbors import (
     KNearestNeighbors)
 
+from typing import Optional
+
 REGRESSION_MODELS = [
     "MultipleLinearRegression",
     "RidgeRegression",
-    "lassoRegression"
+    "lassoRegression",
 ]  # add your models as str here
 
 CLASSIFICATION_MODELS = [
     "RandomForestClassifier",
     "LogisticRegression",
-    "KNN"
+    "KNN",
 ]  # add your models as str here
 
 def get_model_types(type: str = "both") -> list:
@@ -33,16 +36,27 @@ def get_model_types(type: str = "both") -> list:
     elif type == "both":
         return REGRESSION_MODELS + CLASSIFICATION_MODELS
 
-def get_model(model_name: str) -> Model:
-    if model_name not in REGRESSION_MODELS and CLASSIFICATION_MODELS:
+def get_model(model_name: str) -> Optional[Model]:
+    """
+    Factory function to retrieve a model by name.
+
+    Args:
+        model_name (str): The name of the model to retrieve.
+
+    Returns:
+        Optional[Model]: An instance of the specified model, if found.
+                         Returns None if no matching model is found.
+
+    Raises:
+        ValueError: If the `model_name` does not match any known models.
+    """
+    if model_name not in REGRESSION_MODELS + CLASSIFICATION_MODELS:
         print(f"No such model `{model_name}` found.")
+        return None
 
-    if model_name in REGRESSION_MODELS:
-        type_ = "regression"
-    else:
-        type_ = "classification"
+    type_: str = ("regression" if
+                  model_name in REGRESSION_MODELS else "classification")
 
-    """Factory function to get a model by name."""
     if model_name in REGRESSION_MODELS:
         if model_name == "MultipleLinearRegression":
             return MultipleLinearRegression()
