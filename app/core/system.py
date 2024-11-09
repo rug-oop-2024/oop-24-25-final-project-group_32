@@ -1,6 +1,5 @@
 from autoop.core.storage import LocalStorage
 from autoop.core.database import Database
-from autoop.core.ml.dataset import Dataset
 from autoop.core.ml.artifact import Artifact
 from autoop.core.storage import Storage
 from autoop.functional.feature import detect_feature_types
@@ -20,9 +19,8 @@ class ArtifactRegistry():
     def register(self, artifact: Artifact):
         st.write(item.name for item in detect_feature_types(artifact))
 
-        # save the artifact in the storage
         self._storage.save(artifact.data, artifact.asset_path)
-        # save the metadata in the database
+
         entry = {
             "name": artifact.name,
             "version": artifact.version,
