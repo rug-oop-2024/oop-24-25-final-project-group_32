@@ -26,4 +26,4 @@ class Feature():
         self._type = value
 
     def __str__(self):
-        return f"The column {self._name} contains {self._type} variables."
+        return self.name

@@ -28,11 +28,9 @@ class Database():
         assert isinstance(entry, dict), "Data must be a dictionary"
         assert isinstance(collection, str), "Collection must be a string"
         assert isinstance(id, str), "ID must be a string"
-        print(self._data)
         if not self._data.get(collection, None):
             self._data[collection] = {}
         self._data[collection][id] = entry
-        print(self._data)
         self._persist()
         return entry
 
@@ -45,7 +43,6 @@ class Database():
             Union[dict, None]: The data that was stored,
             or None if it doesn't exist
         """
-        print(self._data)
         if not self._data.get(collection, None):
             return None
         return self._data[collection].get(id, None)
@@ -58,7 +55,6 @@ class Database():
         Returns:
             None
         """
-        print("I am nowhere")
         if not self._data.get(collection, None):
             return
         if self._data[collection].get(id, None):
@@ -73,11 +69,8 @@ class Database():
             List[Tuple[str, dict]]: A list of tuples containing the id and
             data for each item in the collection
         """
-        print(self._data)
         if not self._data.get(collection, None):
-            print("shenanigans")
             return []
-        print("other shenanigans")
         return [(id, data) for id, data in self._data[collection].items()]
 
     def refresh(self):

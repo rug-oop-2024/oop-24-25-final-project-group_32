@@ -10,6 +10,8 @@ METRICS = [
     "r_squared"
 ]
 
+def get_metrics() -> list:
+    return METRICS
 
 class Metric(ABC):
     """
