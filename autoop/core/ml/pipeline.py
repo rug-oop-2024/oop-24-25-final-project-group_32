@@ -172,31 +172,33 @@ class Pipeline:
         Y = self._train_y
         self._model.fit(X, Y)
 
-    def _evaluate(self) -> None:
+    def _evaluate(self, x=None, y=None, training=False) -> None:
         """
-        Evaluates the model using the testing dataset and computes metrics.
-        """
-        X = self._compact_vectors(self._test_X)
-        Y = self._test_y
-        self._metrics_results = []
-        predictions = self._model.predict(X)
-        for metric in self._metrics:
-            result = metric.evaluate(predictions, Y)
-            self._metrics_results.append((metric, result))
-        self._predictions = predictions
+        Evaluates the model using the provided dataset (training or testing) 
+        and computes metrics.
 
-    def _evaluate_training(self) -> None:
+        Args:
+            x: Feature vectors to evaluate. If None and training is True, uses training data.
+            y: True labels to evaluate. If None and training is True, uses training labels.
+            training (bool): Whether to evaluate on training data (if True) 
+                            or testing data (if False).
         """
-        Evaluates the model using the training dataset and computes metrics.
-        """
-        X = self._compact_vectors(self._train_X)
-        Y = self._train_y
-        self._metrics_training_results = []
+        X = self._compact_vectors(x if x is not None else self._train_X if training else self._test_X)
+        Y = y if y is not None else self._train_y if training else self._test_y
+
+        metrics_results = []
         predictions = self._model.predict(X)
+
         for metric in self._metrics:
             result = metric.evaluate(predictions, Y)
-            self._metrics_training_results.append((metric, result))
-        self._predictions_training = predictions
+            metrics_results.append((metric, result))
+
+        if training:
+            self._metrics_training_results = metrics_results
+            self._predictions_training = predictions
+        else:
+            self._metrics_results = metrics_results
+            self._predictions = predictions
 
     def execute(self) -> Dict[str, Any]:
         """
@@ -210,8 +212,8 @@ class Pipeline:
         self._preprocess_features()
         self._split_data()
         self._train()
-        self._evaluate()
-        self._evaluate_training()
+        self._evaluate(training=False)  # Evaluate on the testing dataset
+        self._evaluate(training=True)   # Evaluate on the training dataset
         return {
             "metrics training set prediction": self._metrics_training_results,
             "predictions training set": self._predictions_training,
