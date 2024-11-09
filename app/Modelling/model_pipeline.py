@@ -9,6 +9,7 @@ from autoop.core.ml.model import get_model_types, get_model
 from autoop.functional.feature import detect_feature_types
 from autoop.core.ml.pipeline import Pipeline
 from typing import Optional, List
+from copy import deepcopy
 
 
 class CreatePipeline:
@@ -123,8 +124,12 @@ class CreatePipeline:
         Prompts the user to select input features for
         model training from the list of detected features.
         """
+        features = deepcopy(self._features)
+        for ind, feature in enumerate(features):
+            if feature.name == self._target_feature.name:
+                features.pop(ind)
         self._input_features = st.multiselect("Select input features",
-                                              self._features)
+                                        features)
 
     def choose_model(self) -> None:
         """
@@ -139,6 +144,7 @@ class CreatePipeline:
                                    model_types)
 
     def choose_metrics(self) -> None:
+
         """
         Prompts the user to select evaluation metrics for the chosen model.
         """

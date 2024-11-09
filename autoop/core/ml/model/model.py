@@ -5,6 +5,7 @@ from copy import deepcopy
 from typing import Dict, Any, Literal
 
 
+
 class Model(ABC):
     """
     Base class for the models.
@@ -57,10 +58,10 @@ class Model(ABC):
         Returns:
             str: The type of the model
         """
-        try:
+        if self._type is not None:
             return self._type
-        except None:
-            print("The type cannot be None")
+        else:
+            raise ValueError("The type cannot be None")
 
     def _check_key(self, key: str) -> None:
         """

@@ -151,7 +151,8 @@ class Artifact:
         Returns:
             str: The unique ID of the artifact.
         """
-        return f"{self._id}:{self.version}"
+
+        return f"{self._id}:{self._version}"
 
     def read(self) -> bytes:
         """
