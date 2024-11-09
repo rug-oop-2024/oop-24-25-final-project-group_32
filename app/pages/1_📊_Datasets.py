@@ -24,5 +24,6 @@ def manage_dataset() -> None:
     data = create()
     save(data)
 
+
 display_title()
 manage_dataset()

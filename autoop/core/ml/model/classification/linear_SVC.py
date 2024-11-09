@@ -5,6 +5,13 @@ import numpy as np
 
 
 class WrapperLinearSVC(Model):
+    """
+    LinearSVC Classifier model for predicting a categorical
+    target variable.
+    This model computes the optimal weights (parameters) for a given
+    set of observations
+    (features) and ground truth (target variable)
+    """
     def __init__(self, *args, **kwargs):
         """
         Initializes the wrapper logistic regression model by creating an

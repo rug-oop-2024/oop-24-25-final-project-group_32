@@ -6,6 +6,15 @@ from autoop.core.ml.artifact import Artifact
 
 
 class KNearestNeighbors(Model):
+    """
+    A k-Nearest Neighbors (KNN) classifier for supervised learning tasks.
+
+    This KNN classifier predicts the label of a test instance
+    based on the labels of its nearest neighbors in the training data.
+    The distance between instances is calculated,
+    and the most frequent label among the k-nearest neighbors is assigned
+    as the prediction for a test instance.
+    """
     def __init__(self, k: int = 3):
         """
         Initializes the KNearestNeighbors model.
@@ -94,8 +103,8 @@ class KNearestNeighbors(Model):
 
         Returns: the most common label among the k-nearest neighbors.
         """
-        difference = np.linalg.norm(self._parameters["observations"] -
-                                    data_point, axis=1)
+        difference = np.linalg.norm(self._parameters[
+            "observations"] - data_point, axis=1)
         k_indices = np.argsort(difference)[:self.k]
         k_nearest_labels = [self._parameters["ground_truth"][index].tolist()
                             for index in k_indices]

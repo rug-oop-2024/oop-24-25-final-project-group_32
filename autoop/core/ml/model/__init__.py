@@ -1,4 +1,3 @@
-
 from autoop.core.ml.model.model import (
     Model)
 from autoop.core.ml.model.regression.multiple_linear_regression import (
@@ -30,6 +29,16 @@ CLASSIFICATION_MODELS = [
 
 
 def get_model_types(type: str = "both") -> list:
+    """
+    Function that returns the available models for the
+    inputted data
+
+    Args:
+        type (str): The type of the input data. Defaults to "both"
+
+    Returns:
+        list: A list containing the available models for the inputted data
+    """
     if type == "regression":
         return REGRESSION_MODELS
     elif type == "classification":

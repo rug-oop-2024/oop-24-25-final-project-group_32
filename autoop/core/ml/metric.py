@@ -141,8 +141,8 @@ class LogarithmicLoss(Metric):
         prediction = np.clip(prediction, 0, 1)
 
         log_loss = np.sum(
-            ground_truth * np.log(prediction) +
-            (1 - ground_truth) * np.log(1 - prediction)
+            ground_truth * np.log(
+                prediction) + (1 - ground_truth) * np.log(1 - prediction)
         )
 
         try:
@@ -152,6 +152,13 @@ class LogarithmicLoss(Metric):
 
 
 class MacroAveragePrecision(Metric):
+    """
+    A class to compute the macro-average precision for multi-class
+    classification tasks.
+    Macro-average precision calculates the precision for each class
+    individually and
+    then averages these scores, treating all classes equally.
+    """
     def evaluate(self, prediction: np.ndarray,
                  ground_truth: np.ndarray) -> float:
         """
@@ -165,10 +172,8 @@ class MacroAveragePrecision(Metric):
         unique_labels = np.unique(ground_truth)
         precision_per_class = []
         for label in unique_labels:
-            correct = np.sum((ground_truth == label) &
-                             (prediction == label))
-            incorrect = np.sum((ground_truth != label) &
-                               (prediction == label))
+            correct = np.sum((ground_truth == label) & (prediction == label))
+            incorrect = np.sum((ground_truth != label) & (prediction == label))
             try:
                 precision = correct / (correct + incorrect)
             except ZeroDivisionError:

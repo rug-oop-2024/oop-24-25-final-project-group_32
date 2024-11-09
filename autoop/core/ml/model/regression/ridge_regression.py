@@ -5,6 +5,15 @@ import numpy as np
 
 
 class RidgeRegression(Model):
+    """
+    A Ridge Regression model for linear regression with L2 regularization.
+
+    Ridge Regression minimizes the least squares error
+    with an added penalty term proportional to the square of
+    the magnitude of the coefficients. This helps to prevent overfitting
+    by shrinking the coefficients, making it well-suited for problems with
+    multicollinearity or when there are more features than samples.
+    """
     def __init__(self, *args, **kwargs):
         """
         Initializes ridge regression model by creating an

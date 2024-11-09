@@ -3,6 +3,12 @@ from typing import Optional, Dict, List
 
 
 class Artifact:
+    """
+    A class representing an artifact, which encapsulates essential properties
+    such as name, asset path, version, data, type, metadata, and tags.
+    The artifact can be uniquely identified by a base64-encoded ID generated
+    from its asset path.
+    """
     def __init__(
         self,
         name: str,
