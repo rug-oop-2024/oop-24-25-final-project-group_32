@@ -10,9 +10,9 @@ class RidgeRegression(Model):
         Initializes ridge regression model by creating an
         instance of RidgeRegression.
         """
-        super().__init__()
+        super().__init__(type)
         self._model = Ridge()
-        self._type = "RidgeRegression"
+        self._type = "regression"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """

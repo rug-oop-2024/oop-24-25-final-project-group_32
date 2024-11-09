@@ -10,9 +10,9 @@ class WrapperLogisticRegression(Model):
         Initializes the wrapper logistic regression model by creating an
         instance of WrapperLogisticRegression.
         """
-        super().__init__()
+        super().__init__(type)
         self._model = LogisticRegression()
-        self._type = "LogisticRegression"
+        self._type = "classification"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """

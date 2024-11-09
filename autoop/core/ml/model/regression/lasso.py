@@ -22,7 +22,7 @@ class LassoWrapper(Model):
         """
         super().__init__()
         self._lasso = Lasso()
-        self._type = "lassoRegression"
+        self._type = "regression"
 
     def fit(self, observations: np.ndarray, ground_truth: np.ndarray) -> None:
         """

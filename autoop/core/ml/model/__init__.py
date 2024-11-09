@@ -54,9 +54,6 @@ def get_model(model_name: str) -> Optional[Model]:
         print(f"No such model `{model_name}` found.")
         return None
 
-    type_: str = ("regression" if
-                  model_name in REGRESSION_MODELS else "classification")
-
     if model_name in REGRESSION_MODELS:
         if model_name == "MultipleLinearRegression":
             return MultipleLinearRegression()
