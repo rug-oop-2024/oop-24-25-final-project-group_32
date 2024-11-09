@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 from copy import deepcopy
-from typing import Dict, Literal
+from typing import Dict, Literal, Any
 
 
 class Model(ABC):
@@ -57,10 +57,10 @@ class Model(ABC):
         Returns:
             str: The type of the model
         """
-        try:
+        if self._type is not None:
             return self._type
-        except None:
-            print("The type cannot be None")
+        else:
+            raise ValueError("The type cannot be None")
 
     def _check_key(self, key: str) -> None:
         """

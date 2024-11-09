@@ -94,7 +94,6 @@ class KNearestNeighbors(Model):
         k_indices = np.argsort(difference)[:self.k]
         k_nearest_labels = [self._parameters["ground_truth"][index].tolist()
                             for index in k_indices]
-        print(k_nearest_labels)
         k_nearest_labels = [str(label) for label in k_nearest_labels]
         prediction = Counter(k_nearest_labels).most_common()
         return prediction[0][0]

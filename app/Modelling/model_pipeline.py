@@ -10,6 +10,7 @@ from autoop.core.ml.metric import Metric, get_metrics, get_metric
 from autoop.core.ml.model import get_model_types, get_model, Model
 from autoop.functional.feature import detect_feature_types
 from autoop.core.ml.pipeline import Pipeline
+from copy import deepcopy
 
 
 class CreatePipeline:
@@ -50,9 +51,9 @@ class CreatePipeline:
                                     format_func=lambda data: data.name)
             if st.button("choose"):
                 self._data = Dataset.from_dataframe(pd.read_csv(io.StringIO(selected.data.decode())),
-                                                    selected.name,
-                                                    selected.asset_path, 
-                                                    selected.version)
+                    selected.name,
+                    selected.asset_path, 
+                    selected.version)
                 self._features = detect_feature_types(self._data)
         else:
             st.write(f"Chosen dataset: {self._data.name}")
@@ -69,8 +70,12 @@ class CreatePipeline:
                             self._features)
 
     def choose_input_features(self) -> None:
+        features = deepcopy(self._features)
+        for ind, feature in enumerate(features):
+            if feature.name == self._target_feature.name:
+                features.pop(ind)
         self._input_features = st.multiselect("Select input features",
-                                        self._features)
+                                        features)
 
     def choose_model(self) -> None:
         if self._target_feature.type == "categorical":
@@ -80,7 +85,10 @@ class CreatePipeline:
         self._model = st.selectbox("Select a model to train your data on", model_types)
 
     def choose_metrics(self) -> None:
-        self._metric = st.multiselect("Select metrics", get_metrics())
+        if self._target_feature.type == "categorical":
+            self._metric = st.multiselect("Select metrics", get_metrics("classification"))
+        else:
+            self._metric = st.multiselect("Select metrics", get_metrics("regression"))
 
     def choose_split(self) -> None:
         self._split = st.slider("Select the split ratio", 0.1, 0.9, 0.8)
