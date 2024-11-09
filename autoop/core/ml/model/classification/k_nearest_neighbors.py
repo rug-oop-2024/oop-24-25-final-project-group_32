@@ -16,7 +16,7 @@ class KNearestNeighbors(Model):
         """
         super().__init__()
         self._k: int = k
-        self._type = "KNN"
+        self._type = "classification"
 
     @property
     def k(self) -> int:
