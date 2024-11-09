@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 from copy import deepcopy
-from typing import Dict, Literal
+from typing import Dict, Any, Literal
 
 
 class Model(ABC):

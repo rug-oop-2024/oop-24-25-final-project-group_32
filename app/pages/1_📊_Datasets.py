@@ -6,7 +6,7 @@ def display_title() -> None:
     """
     Displays the title for the Streamlit page.
 
-    This function sets the Streamlit page title to "Dataset Management."
+    This function sets the Streamlit page title to "Dataset Management.
     """
     st.title("Dataset Management")
 

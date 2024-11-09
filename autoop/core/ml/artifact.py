@@ -34,6 +34,7 @@ class Artifact:
         self._metadata = metadata if metadata is not None else {}
         self._type = type
         self._tags = tags if tags is not None else []
+        self._id = base64.b64encode(self.asset_path.encode()).decode()
 
     @property
     def name(self) -> str:
@@ -150,8 +151,7 @@ class Artifact:
         Returns:
             str: The unique ID of the artifact.
         """
-        encoded_path = base64.b64encode(self.asset_path.encode()).decode()
-        return f"{encoded_path}:{self.version}"
+        return f"{self._id}:{self.version}"
 
     def read(self) -> bytes:
         """

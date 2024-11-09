@@ -29,9 +29,6 @@ def save(artifact: Dataset | None) -> None:
 
     Args:
         Artifact (Dataset): Dataset to be saved
-
-    Returns:
-        None
     """
     automl = AutoMLSystem.get_instance()
     if st.button("save"):
