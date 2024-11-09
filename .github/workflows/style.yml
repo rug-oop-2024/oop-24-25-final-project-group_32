@@ -6,7 +6,7 @@ on:
       - main
       - master
       - Maurice
-      - Luca
+      - Luca  
 
   pull_request:
     branches:

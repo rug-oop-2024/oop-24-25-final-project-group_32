@@ -61,5 +61,4 @@ class Feature:
         Returns:
             str: A description of the feature's name and type.
         """
-        return self.name
-
+        return f"{self.name}: {self.type}"

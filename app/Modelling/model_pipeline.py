@@ -11,6 +11,7 @@ from autoop.core.ml.model import get_model_types, get_model, Model
 from autoop.functional.feature import detect_feature_types
 from autoop.core.ml.pipeline import Pipeline
 
+
 class CreatePipeline:
     _instance = None
 
@@ -83,6 +84,8 @@ class CreatePipeline:
 
     def choose_split(self) -> None:
         self._split = st.slider("Select the split ratio", 0.1, 0.9, 0.8)
+
+
 
     @st.dialog("Summary", width = "large")
     def summary(self) -> None:

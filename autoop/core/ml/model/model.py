@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 from copy import deepcopy
-from typing import Dict
+from typing import Dict, Any
 
 
 class Model(ABC):
@@ -17,6 +17,7 @@ class Model(ABC):
             type (str): The type of model.
         """
         self._parameters: Dict = {}
+        self._type: str = None
 
     @property
     def parameters(self) -> Dict:
@@ -27,6 +28,27 @@ class Model(ABC):
         """
         return deepcopy(self._parameters)
 
+    @parameters.setter
+    def parameters(self, new_parameters: dict[str, Any]) -> None:
+        """
+        Use the setter to check and update parameters.
+
+        Args:
+            new_parameters (dict[str, np.ndarray]):
+                The new parameter dictionary.
+
+        Raises:
+            ValueError:
+                If the new input is not a dictionary.
+        """
+        if not isinstance(new_parameters, dict):
+            raise TypeError("Parameters must be a dictionary.")
+
+        for key in new_parameters.keys():
+            self._check_key(key)
+
+        self._parameters.update(new_parameters)
+
     @property
     def type(self) -> str:
         """
@@ -35,7 +57,25 @@ class Model(ABC):
         Returns:
             str: The type of the model
         """
-        return self._type
+        try:
+            return self._type
+        except None:
+            print("The type cannot be None")
+
+    def _check_key(self, key: str) -> None:
+        """
+        Checks keys for the parameters.
+
+        Args:
+            key (str):
+                The parameter name.
+
+        Raises:
+            TypeError:
+                If the key is not a string.
+        """
+        if not isinstance(key, str):
+            raise TypeError("Keys for the parameters must be strings.")
 
     @abstractmethod
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
