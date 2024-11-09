@@ -10,7 +10,6 @@ def initialize_pipeline() -> CreatePipeline:
         CreatePipeline: An instance of the `CreatePipeline` class
         from `model_pipeline`.
     """
-    print("it gets here")
     return CreatePipeline().get_instance()
 
 

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 from copy import deepcopy
-from typing import Dict, Any
+from typing import Dict, Literal
 
 
 class Model(ABC):
@@ -17,7 +17,7 @@ class Model(ABC):
             type (str): The type of model.
         """
         self._parameters: Dict = {}
-        self._type: str = None
+        self._type: Literal["regression", "classification"] = None
 
     @property
     def parameters(self) -> Dict:

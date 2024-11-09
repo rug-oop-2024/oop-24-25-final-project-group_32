@@ -218,6 +218,7 @@ class Pipeline:
         self._train()
         self._evaluate(training=False)
         self._evaluate(training=True)
+
         return {
             "metrics training set prediction": self._metrics_training_results,
             "predictions training set": self._predictions_training,

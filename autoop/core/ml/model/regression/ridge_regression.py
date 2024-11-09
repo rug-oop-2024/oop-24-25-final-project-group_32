@@ -10,7 +10,7 @@ class RidgeRegression(Model):
         Initializes ridge regression model by creating an
         instance of RidgeRegression.
         """
-        super().__init__(type)
+        super().__init__()
         self._model = Ridge()
         self._type = "regression"
 
