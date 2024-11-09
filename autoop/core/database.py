@@ -46,8 +46,7 @@ class Database:
         assert isinstance(entry, dict), "Data must be a dictionary"
         assert isinstance(collection, str), "Collection must be a string"
         assert isinstance(id, str), "ID must be a string"
-
-        if not self._data.get(collection):
+        if not self._data.get(collection, None):
             self._data[collection] = {}
         self._data[collection][id] = entry
         self._persist()
@@ -64,7 +63,7 @@ class Database:
         Returns:
             Union[dict, None]: The retrieved data, or None if not found.
         """
-        if not self._data.get(collection):
+        if not self._data.get(collection, None):
             return None
         return self._data[collection].get(id)
 
@@ -76,7 +75,7 @@ class Database:
             collection (str): The collection to delete data from.
             id (str): The identifier of the data entry to delete.
         """
-        if not self._data.get(collection):
+        if not self._data.get(collection, None):
             return
         if self._data[collection].get(id):
             del self._data[collection][id]
@@ -93,7 +92,7 @@ class Database:
             List[Tuple[str, dict]]: A list of tuples with
             each item's id and data.
         """
-        if not self._data.get(collection):
+        if not self._data.get(collection, None):
             return []
         return [(id, data) for id, data in self._data[collection].items()]
 

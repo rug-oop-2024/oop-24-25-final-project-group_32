@@ -28,6 +28,13 @@ CLASSIFICATION_MODELS = [
     "KNN",
 ]  # add your models as str here
 
+def get_model_types(type: str = "both") -> list:
+    if type == "regression":
+        return REGRESSION_MODELS
+    elif type == "classification":
+        return CLASSIFICATION_MODELS
+    elif type == "both":
+        return REGRESSION_MODELS + CLASSIFICATION_MODELS
 
 def get_model(model_name: str) -> Optional[Model]:
     """
