@@ -201,7 +201,7 @@ class CreatePipeline:
         self._split = st.slider("Select the split ratio", 0.1, 0.9, 0.8)
 
     @st.dialog("Summary", width="large")
-    def summary(self, existed:  bool = False) -> None:
+    def summary(self, existed: bool = False) -> None:
         """
         Displays a summary of the chosen dataset, features, model, metrics,
         and split ratio.
@@ -222,11 +222,12 @@ class CreatePipeline:
                     data_features = detect_feature_types(data)
                     target_in_features = self._target_feature.name in [
                         feature.name for feature in data_features
-                        ]
+                                                                      ]
                     input_in_features = set(
                         feature.name for feature in self._input_features
-                        ).issubset(
-                            set(feature.name for feature in data_features))
+                                           ).issubset(
+                            set(feature.name for feature in data_features)
+                                                     )
                     if target_in_features and input_in_features:
                         self._data = data
                         self.create_pipeline()
@@ -298,7 +299,8 @@ class CreatePipeline:
         Loads a pipeline from the artifact registry.
         """
         self._data = self._convert_artifact_to_dataset(
-                self._automl.registry.get(artifact.metadata["data"]))
+            self._automl.registry.get(artifact.metadata["data"])
+                                                      )
         print(f"target feature: {artifact.metadata['target_feature']}")
         self._target_feature = Feature(
             artifact.metadata["target_feature"]["name"],

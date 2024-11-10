@@ -65,7 +65,7 @@ class Feature:
             "name": self._name,
             "type": self._type
         }
-    
+
     def from_artifact(self, artifact: dict) -> None:
         """
         Loads a feature from an artifact dictionary.
