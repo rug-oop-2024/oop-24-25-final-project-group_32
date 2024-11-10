@@ -1,7 +1,7 @@
 from sklearn.svm import LinearSVC
 from autoop.core.ml.model.model import Model
-from autoop.core.ml.artifact import Artifact
 import numpy as np
+
 
 class WrapperLinearSVC(Model):
     """

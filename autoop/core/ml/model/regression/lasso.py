@@ -1,6 +1,5 @@
 from autoop.core.ml.model.model import Model
 from sklearn.linear_model import Lasso
-from autoop.core.ml.artifact import Artifact
 import numpy as np
 
 

@@ -1,5 +1,4 @@
 from sklearn.linear_model import Ridge
-from autoop.core.ml.artifact import Artifact
 from autoop.core.ml.model.model import Model
 import numpy as np
 
