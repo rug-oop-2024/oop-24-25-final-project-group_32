@@ -244,6 +244,6 @@ class Pipeline:
                          "dataset": self._dataset,
                          "input_features": [feature.to_artifact() for feature in self._input_features],
                          "target_feature": self._target_feature.to_artifact(),
-                         "metrics": [metric.name for metric in self._metrics],},
+                         "metrics": [metric.name for metric in self._metrics]},
                         ["pipeline"])
     # Don't forget to do more for this as in addd a to artifact method for each class
