@@ -1,11 +1,31 @@
 import streamlit as st
-import pandas as pd
+from app.datasets.management import create, save
 
-from app.core.system import AutoMLSystem
-from autoop.core.ml.dataset import Dataset
 
-automl = AutoMLSystem.get_instance()
+def display_title() -> None:
+    """
+    Displays the title for the Streamlit page.
 
-datasets = automl.registry.list(type="dataset")
+    This function sets the Streamlit page title to "Dataset Management.
+    """
+    st.title("Dataset Management")
 
-# your code here
+
+def manage_dataset() -> None:
+    """
+    Creates and saves a dataset.
+
+    This function utilizes the `create` function to generate a dataset
+    and then saves it using the `save` function.
+
+    Raises:
+        Exception: If either `create` or `save` functions throw an error.
+    """
+    data = create()
+    if data:
+        st.write(data.read())
+    save(data)
+
+
+display_title()
+manage_dataset()

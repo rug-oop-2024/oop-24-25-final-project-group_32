@@ -95,11 +95,11 @@ E.g. docs/decisions/DSC-0001-use-typescript.md
 Some examples include housing prices, second-hand cars, etc.
 
 ### Checklist
-- [ ] I have read the instructions carefully.
-- [ ] I have filled my personal rubric.
-- [ ] The code is refactored to style standards.
-- [ ] I have passed my tests.
-- [ ] I have documented my code and decisions.
+- [X] I have read the instructions carefully.
+- [X] I have filled my personal rubric.
+- [X] The code is refactored to style standards.
+- [X] I have passed my tests.
+- [X] I have documented my code and decisions.
 
 # Grading & Submission (IMPORTANT)
 
@@ -153,32 +153,32 @@ If you did not implement the feature
 
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|--------------------------|---------|         
-| Up-to-date requirements.txt           | NF           |                      |         | |
-| `ML/detect-features`                  | FN           |                      |         | |
-| `ML/artifact`                         | NF           |                      |         | |
-| `ML/feature`                          | NF           |                      |         | |
-| `ML/metric`                           | NF           |                      |         | |
-| `ML/metric/extensions`                | FN           |                      |         | |
-| `ML/model`                            | NF           |                      |         | |
-| `ML/model/extensions`                 | FN           |                      |         | |
-| `ML/pipeline/evaluation`              | FN           |                      |         | | 
-| `ST/page/datasets`                    | NF           |                      |         | |
-| `ST/datasets/management/create`       | FN           |                      |         | |
-| `ST/datasets/management/save`         | FN           |                      |         | |
-| `ST/page/modelling`                   | NF           |                      |         | |
-| `ST/modelling/datasets/list`          | FN           |                      |         | |
-| `ST/modelling/datasets/features`      | FN           |                      |         | |
-| `ST/modelling/models`                 | FN           |                      |         | |
-| `ST/modelling/pipeline/split`         | FN           |                      |         | |
-| `ST/modelling/pipeline/metrics`       | FN           |                      |         | |
-| `ST/modelling/pipeline/summary`       | FN           |                      |         | |
-| `ST/modelling/pipeline/train`         | FN           |                      |         | |
-| `ST/modelling/pipeline/save`          | FN           |                      |         | |
-| `ST/page/deployment`                  | FN           |                      |         | |
-| `ST/deployment/load`                  | FN           |                      |         | |
-| `ST/deployment/predict`               | FN           |                      |         | |
+| Up-to-date requirements.txt           | NF           |  Maurice             |    X    |Instructions running the code: The datasets are in the docs folder. From here you can download and use them |
+| `ML/detect-features`                  | FN           |  Both                |    X    | |
+| `ML/artifact`                         | NF           |  Maurice             |    X    | |
+| `ML/feature`                          | NF           |  Both                |    X    | |
+| `ML/metric`                           | NF           |  Maurice             |    X    | |
+| `ML/metric/extensions`                | FN           |  Maurice             |    X    | |
+| `ML/model`                            | NF           |  Both                |    X    | |
+| `ML/model/extensions`                 | FN           |  Maurice             |    X    | |
+| `ML/pipeline/evaluation`              | FN           |  Maurice             |    X    | | 
+| `ST/page/datasets`                    | NF           |  Luca                |    X    | Luca worked as first hand on GUI, cause of Windows not supporting the GUI (After intensive fixing tries with TA).| 
+| `ST/datasets/management/create`       | FN           |  Luca                |    X    | Maurice changed to helping second hand and doing all the flake8, docstrings, fixing issues and documentation. |
+| `ST/datasets/management/save`         | FN           |  Luca                |    X    | This assured a balanced workload even if that doesnt show from the table on the left. |
+| `ST/page/modelling`                   | NF           |  Luca                |    X    | |
+| `ST/modelling/datasets/list`          | FN           |  Luca                |    X    | |
+| `ST/modelling/datasets/features`      | FN           |  Luca                |    X    | |
+| `ST/modelling/models`                 | FN           |  Luca                |    X    | |
+| `ST/modelling/pipeline/split`         | FN           |  Luca                |    X    | |
+| `ST/modelling/pipeline/metrics`       | FN           |  Luca                |    X    | |
+| `ST/modelling/pipeline/summary`       | FN           |  Luca                |    X    | |
+| `ST/modelling/pipeline/train`         | FN           |  Luca                |    X    | |
+| `ST/modelling/pipeline/save`          | FN           |  Luca                |    X    | |
+| `ST/page/deployment`                  | FN           |  Luca                |    X    | |
+| `ST/deployment/load`                  | FN           |  Luca                |    X    | |
+| `ST/deployment/predict`               | FN           |  Luca                |    X    | |
 
 If you add extra features, please indicate them below:
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|---------|-----|
-|           |            |                      |         | |
+|  `ST/datasets/management/delete`      |      FN      |  Maurice             |  X      | |

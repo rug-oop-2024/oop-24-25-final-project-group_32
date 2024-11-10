@@ -1,0 +1,13 @@
+Dataset: Wine
+Target_feature: Target
+Input_feature(s): alcohol, ash, magnesium, total_phenols, hue, proline, color_intensity
+Model: Multiple Linear Regression
+Metric(s): Mean_squared_error, root_mean_squared_error
+Output: 
+Metrics training set prediction:
+mean_squared_error: 0.19209806405617527
+root_mean_squared_error: 0.43828993150216816
+
+metrics testing set prediction:
+mean_squared_error: 0.42973972509024005
+root_mean_squared_error: 0.6555453646318004
