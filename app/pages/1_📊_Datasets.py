@@ -25,7 +25,7 @@ def manage_dataset() -> None:
     if data:
         st.write(data.read())
     save(data)
-    
+
 
 display_title()
 manage_dataset()

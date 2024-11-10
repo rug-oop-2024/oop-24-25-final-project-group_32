@@ -1,6 +1,5 @@
 from autoop.core.ml.model.model import Model
 from sklearn.linear_model import Lasso
-from autoop.core.ml.artifact import Artifact
 import numpy as np
 
 
@@ -45,8 +44,6 @@ class LassoWrapper(Model):
             "coefficients": np.array(self._lasso.coef_),
             "intercept": np.atleast_1d(self._lasso.intercept_),
         }
-
-        self._data = observations
 
     def predict(self, observations: np.ndarray) -> np.ndarray:
         """
