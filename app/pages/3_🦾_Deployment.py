@@ -2,12 +2,14 @@ import streamlit as st
 from app.core.system import AutoMLSystem
 from app.Modelling.model_pipeline import CreatePipeline
 
+
 def configure_page() -> None:
     """
     Configures the Streamlit page with a title and
     icon specific to the modelling section.
     """
     st.set_page_config(page_title="Deployment", page_icon="🦾")
+
 
 def write_helper_text(text: str) -> None:
     """
@@ -19,6 +21,7 @@ def write_helper_text(text: str) -> None:
     """
     st.write(f"<p style=\"color: #888;\">{text}</p>", unsafe_allow_html=True)
 
+
 def initialize_pipeline() -> CreatePipeline:
     """
     Initializes the machine learning pipeline creation instance.
@@ -28,6 +31,7 @@ def initialize_pipeline() -> CreatePipeline:
         from `model_pipeline`.
     """
     return CreatePipeline().get_instance()
+
 
 def main() -> None:
     """
@@ -49,9 +53,12 @@ def main() -> None:
     if len(saved_pipelines) == 0:
         st.write("No pipelines saved yet.")
     else:
-        selected_pipeline = st.selectbox("Select a pipeline", saved_pipelines, format_func=lambda x: x.name)
+        selected_pipeline = st.selectbox("Select a pipeline",
+                                         saved_pipelines,
+                                         format_func=lambda x: x.name)
         if st.button("load"):
             load_pipeline.load(selected_pipeline)
+
 
 if __name__ == "__main__":
     main()
