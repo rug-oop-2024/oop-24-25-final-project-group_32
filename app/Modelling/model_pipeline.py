@@ -2,13 +2,14 @@ import streamlit as st
 import pandas as pd
 import io
 from app.core.system import AutoMLSystem
+from autoop.core.ml.artifact import Artifact
 from autoop.core.ml.dataset import Dataset
 from autoop.core.ml.feature import Feature
 from autoop.core.ml.metric import get_metrics, get_metric
 from autoop.core.ml.model import get_model_types, get_model
 from autoop.functional.feature import detect_feature_types
 from autoop.core.ml.pipeline import Pipeline
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from copy import deepcopy
 
 
@@ -35,6 +36,7 @@ class CreatePipeline:
         self._model: Optional[str] = None
         self._metric: Optional[List[str]] = None
         self._split: Optional[float] = None
+        self._results: Optional[Dict[str, Any]] = None
 
     @staticmethod
     def get_instance() -> "CreatePipeline":
@@ -158,7 +160,7 @@ class CreatePipeline:
                                           get_metrics("classification"))
         else:
             self._metric = st.multiselect("Select metrics",
-                                          get_metric("regression"))
+                                          get_metrics("regression"))
 
     def choose_split(self) -> None:
         """
@@ -200,6 +202,17 @@ class CreatePipeline:
             split=self._split
         )
         st.write("Pipeline created and saved to artifact registry")
-        results = pipeline.execute()
-        for result in results:
-            st.write(results[result])
+        self._results = pipeline.execute()
+        st.write(f"**{list(self._results.keys())[0]}**:")
+        for metric in list(self._results.values())[0]:
+            st.write(f"{metric[0].name}: {metric[1]}")
+        st.write(f"**{list(self._results.keys())[2]}**:")
+        for metric in list(self._results.values())[2]:
+            st.write(f"{metric[0].name}: {metric[1]}")
+
+    def save(self) -> None:
+        """
+        Saves the pipeline to the artifact registry.
+        """
+        if st.button("Save"):
+            artifact  = Artifact()

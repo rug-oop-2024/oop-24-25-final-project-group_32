@@ -25,6 +25,7 @@ class LassoWrapper(Model):
         new_parameters = self._lasso.get_params()
         self.parameters = new_parameters
         self._type = "regression"
+        self._name = "Lasso Regression"
 
     def fit(self, observations: np.ndarray, ground_truth: np.ndarray) -> None:
         """

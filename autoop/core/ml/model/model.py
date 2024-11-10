@@ -18,6 +18,7 @@ class Model(ABC):
         """
         self._parameters: Dict = {}
         self._type: Literal["regression", "classification"] = None
+        self._name: str = None
 
     @property
     def parameters(self) -> Dict:
@@ -61,6 +62,16 @@ class Model(ABC):
             return self._type
         else:
             raise ValueError("The type cannot be None")
+        
+    @property
+    def name(self) -> str:
+        """
+        Getter for the name of the model.
+
+        Returns:
+            str: The name of the model.
+        """
+        return self._name
 
     def _check_key(self, key: str) -> None:
         """
@@ -108,7 +119,7 @@ class Model(ABC):
         """
         pass
 
-    def to_artifact(self, name: str, version: str) -> Artifact:
+    def to_artifact(self, version: str) -> Artifact:
         """Converts the model to an Artifact object for storage.
 
         Args:
@@ -119,15 +130,13 @@ class Model(ABC):
             Artifact: An artifact instance containing
             model metadata and parameters.
         """
-        model = name
-        path = f"assets\\objects{name}"
-        params = self._parameters
         artifact = Artifact(
-            name=model,
+            name=self._name,
             type=self._type,
             version=version,
-            asset_path=path,
-            parameters=params,
+            asset_path=self._name,
+            parameters=self._parameters,
             data=None
         )
         return artifact
+    

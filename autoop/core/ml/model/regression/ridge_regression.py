@@ -24,6 +24,7 @@ class RidgeRegression(Model):
         new_parameters = self._model.get_params()
         self.parameters = new_parameters
         self._type = "regression"
+        self._name = "Ridge Regression"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """

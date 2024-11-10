@@ -103,6 +103,7 @@ class Accuracy(Metric):
     """
     Accuracy metric for classification.
     """
+    name = "accuracy"
 
     def evaluate(self,
                  prediction: np.ndarray,
@@ -130,6 +131,7 @@ class LogarithmicLoss(Metric):
     """
     Logarithmic Loss metric for classification with probabilistic outputs.
     """
+    name = "logarithmic_loss"
 
     def evaluate(self,
                  prediction: np.ndarray,
@@ -170,6 +172,7 @@ class MacroAveragePrecision(Metric):
     individually and
     then averages these scores, treating all classes equally.
     """
+    name = "macro_average"
     def evaluate(self, prediction: np.ndarray,
                  ground_truth: np.ndarray) -> float:
         """
@@ -197,6 +200,7 @@ class MeanSquaredError(Metric):
     """
     Mean Squared Error (MSE) metric for regression.
     """
+    name = "mean_squared_error"
 
     def evaluate(self,
                  prediction: np.ndarray,
@@ -221,6 +225,7 @@ class RootMeanSquaredError(Metric):
     """
     Root Mean Squared Error (RMSE) metric for regression.
     """
+    name = "root_mean_squared_error"
 
     def evaluate(self,
                  prediction: np.ndarray,
@@ -246,6 +251,7 @@ class RSquared(Metric):
     """
     R-squared (Coefficient of Determination) metric for regression.
     """
+    name = "r_squared"
 
     def evaluate(self,
                  prediction: np.ndarray,
