@@ -160,23 +160,23 @@ If you did not implement the feature
 | `ML/metric`                           | NF           |  Maurice             |    X    | |
 | `ML/metric/extensions`                | FN           |  Maurice             |    X    | |
 | `ML/model`                            | NF           |  Luca                |    X    | |
-| `ML/model/extensions`                 | FN           |  Luca                |    X    | |
+| `ML/model/extensions`                 | FN           |  Maurice             |    X    | |
 | `ML/pipeline/evaluation`              | FN           |  Maurice             |    X    | | 
-| `ST/page/datasets`                    | NF           |                      |         | |
-| `ST/datasets/management/create`       | FN           |                      |         | |
-| `ST/datasets/management/save`         | FN           |                      |         | |
-| `ST/page/modelling`                   | NF           |                      |         | |
-| `ST/modelling/datasets/list`          | FN           |                      |         | |
-| `ST/modelling/datasets/features`      | FN           |                      |         | |
-| `ST/modelling/models`                 | FN           |                      |         | |
-| `ST/modelling/pipeline/split`         | FN           |                      |         | |
-| `ST/modelling/pipeline/metrics`       | FN           |                      |         | |
-| `ST/modelling/pipeline/summary`       | FN           |                      |         | |
-| `ST/modelling/pipeline/train`         | FN           |                      |         | |
-| `ST/modelling/pipeline/save`          | FN           |                      |         | |
-| `ST/page/deployment`                  | FN           |                      |         | |
-| `ST/deployment/load`                  | FN           |                      |         | |
-| `ST/deployment/predict`               | FN           |                      |         | |
+| `ST/page/datasets`                    | NF           |  Luca                |    X    | | Luca for GUI, cause of Windows not supporting. Maurice changed to helping second hand
+| `ST/datasets/management/create`       | FN           |  Luca                |    X    | | And doing all the flake8, docstrings, fixing issues and documentation.
+| `ST/datasets/management/save`         | FN           |  Luca                |    X    | |
+| `ST/page/modelling`                   | NF           |  Luca                |    X    | |
+| `ST/modelling/datasets/list`          | FN           |  Luca                |    X    | |
+| `ST/modelling/datasets/features`      | FN           |  Luca                |    X    | |
+| `ST/modelling/models`                 | FN           |  Luca                |    X    | |
+| `ST/modelling/pipeline/split`         | FN           |  Luca                |    X    | |
+| `ST/modelling/pipeline/metrics`       | FN           |  Luca                |    X    | |
+| `ST/modelling/pipeline/summary`       | FN           |  Luca                |    X    | |
+| `ST/modelling/pipeline/train`         | FN           |  Luca                |    X    | |
+| `ST/modelling/pipeline/save`          | FN           |  Luca                |    X    | |
+| `ST/page/deployment`                  | FN           |  Luca                |    X    | |
+| `ST/deployment/load`                  | FN           |  Luca                |    X    | |
+| `ST/deployment/predict`               | FN           |  Luca                |    X    | |
 
 If you add extra features, please indicate them below:
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
