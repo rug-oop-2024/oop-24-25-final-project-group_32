@@ -13,6 +13,7 @@ class WrapperLinearSVC(Model):
         super().__init__()
         self._model = LinearSVC()
         self._type = "classification"
+        self._name = "Linear SVC"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """

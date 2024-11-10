@@ -13,6 +13,7 @@ class RidgeRegression(Model):
         super().__init__()
         self._model = Ridge()
         self._type = "regression"
+        self._name = "Ridge Regression"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """
