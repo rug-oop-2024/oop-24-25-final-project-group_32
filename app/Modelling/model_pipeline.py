@@ -224,7 +224,7 @@ class CreatePipeline:
                         feature.name for feature in data_features]
                     input_in_features = set(
                         feature.name for feature in self._input_features
-                                           ).issubset(
+                        ).issubset(
                             set(feature.name for feature in data_features))
                     if target_in_features and input_in_features:
                         self._data = data
