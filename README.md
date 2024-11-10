@@ -153,7 +153,7 @@ If you did not implement the feature
 
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|--------------------------|---------|         
-| Up-to-date requirements.txt           | NF           |  Maurice             |    X    | |
+| Up-to-date requirements.txt           | NF           |  Maurice             |    X    |Instructions running the code: The datasets are in the docs folder. From here you can download and use them |
 | `ML/detect-features`                  | FN           |  Both                |    X    | |
 | `ML/artifact`                         | NF           |  Maurice             |    X    | |
 | `ML/feature`                          | NF           |  Both                |    X    | |
