@@ -221,13 +221,11 @@ class CreatePipeline:
                 if st.button("Train"):
                     data_features = detect_feature_types(data)
                     target_in_features = self._target_feature.name in [
-                        feature.name for feature in data_features
-                                                                      ]
+                        feature.name for feature in data_features]
                     input_in_features = set(
                         feature.name for feature in self._input_features
-                                           ).issubset(
-                            set(feature.name for feature in data_features)
-                                                     )
+                        ).issubset(
+                            set(feature.name for feature in data_features))
                     if target_in_features and input_in_features:
                         self._data = data
                         self.create_pipeline()
@@ -260,8 +258,7 @@ class CreatePipeline:
             model=get_model(self._model),
             input_features=self._input_features,
             target_feature=self._target_feature,
-            split=self._split
-        )
+            split=self._split)
         st.write("Pipeline created.")
         self._results = pipeline.execute()
         st.write(f"**{list(self._results.keys())[0]}**:")
