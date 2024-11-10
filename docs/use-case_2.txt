@@ -1,6 +1,13 @@
 Dataset: Car
-Target_feature:
-Input_feature(s):
-Model:
-Metric(s):
+Target_feature: buying
+Input_feature(s): lug_boot, class, safety, doors, persons, maint
+Model: RandomForestClassifier
+Metric(s): accuracy, macro_average
 Output:
+metrics training set prediction:
+accuracy: 0.4109985528219971
+macro_average: 0.4193476318141197
+
+metrics testing set prediction:
+accuracy: 0.0
+macro_average: nan

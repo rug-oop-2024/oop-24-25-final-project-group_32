@@ -1,6 +1,16 @@
 Dataset: Real estate
-Target_feature:
-Input_feature(s):
-Model:
-Metric(s):
+Target_feature: house price of unit area
+Input_feature(s): house age, transaction date, distance to the nearest MRT station,
+number of convenience stores
+Model: MultipleLinearRegression
+Metric(s): root mean squared error, mean squared error, r squared
 Output:
+metrics training set prediction:
+root_mean_squared_error: 0.6896488890493698
+mean_squared_error: 0.47561559016703003
+r_squared: 0.455576303006645
+
+metrics testing set prediction:
+root_mean_squared_error: 0.5688612116715722
+mean_squared_error: 0.32360307814444933
+r_squared: 0.35695775174829847
