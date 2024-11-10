@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import io
 from app.core.system import AutoMLSystem
+from app.datasets.management import create
 from autoop.core.ml.artifact import Artifact
 from autoop.core.ml.dataset import Dataset
 from autoop.core.ml.feature import Feature
@@ -89,6 +90,24 @@ class CreatePipeline:
         Returns: The model
         """
         return self._model
+
+    @property
+    def metrics(self) -> Optional[List[str]]:
+        """
+        Getter for the metric
+
+        Returns: The metric
+        """
+        return self._metric
+    
+    @property
+    def split(self) -> Optional[float]:
+        """
+        Getter for the split
+
+        Returns: The split
+        """
+        return self._split
 
     def _convert_artifact_to_dataset(self, artifact: Artifact) -> Dataset:
         """
@@ -182,7 +201,7 @@ class CreatePipeline:
         self._split = st.slider("Select the split ratio", 0.1, 0.9, 0.8)
 
     @st.dialog("Summary", width="large")
-    def summary(self) -> None:
+    def summary(self, existed:  bool = False) -> None:
         """
         Displays a summary of the chosen dataset, features, model, metrics,
         and split ratio.
@@ -196,9 +215,29 @@ class CreatePipeline:
         st.write(f"**Model**: {self._model}")
         st.write(f"**Metrics**: {', '.join(self._metric)}")
         st.write(f"**Split ratio**: {self._split}")
-        if st.button("Create"):
-            self.create_pipeline()
-        self.save("test", "1.0.0")
+        if existed:
+            data = create()
+            if data:
+                if st.button("Train"):
+                    data_features = detect_feature_types(data)
+                    if self._target_feature.name in [feature.name for feature in data_features] and set([feature.name for feature in self._input_features]).issubset(set([feature.name for feature in data_features])):
+                        self._data = data
+                        self.create_pipeline()
+                    else:
+                        st.write("Features do not match")
+
+        else:
+            if st.button("Create"):
+                self.create_pipeline()
+            with st.popover("Save Pipeline"):
+                name = st.text_input("Name")
+                version = st.text_input("Version", "1.0.0")
+                if name and version:
+                    if name not in [pipeline.name for pipeline in self._automl.registry.list("pipeline")]:
+                        self.save(name, version)
+                    else:
+                        st.write("Name already exists")
+
 
 
     def create_pipeline(self) -> None:
@@ -215,7 +254,7 @@ class CreatePipeline:
             target_feature=self._target_feature,
             split=self._split
         )
-        st.write("Pipeline created and saved to artifact registry")
+        st.write("Pipeline created.")
         self._results = pipeline.execute()
         st.write(f"**{list(self._results.keys())[0]}**:")
         for metric in list(self._results.values())[0]:
@@ -232,7 +271,7 @@ class CreatePipeline:
             artifact  = Artifact(name=name,
                                  asset_path = name,
                                  version = version,
-                                 data = self._data,
+                                 data = self._data.data,
                                  type = "pipeline",
                                  metadata = {"model": self._model,
                                                "data": self._data.id,
@@ -242,6 +281,7 @@ class CreatePipeline:
                                                "metrics": self._metric},
                                 tags = ["pipeline"])
             self._automl.registry.register(artifact)
+            st.write("Pipeline saved to artifact registry")
 
     def load(self, artifact: Artifact) -> None:
         """
@@ -255,4 +295,4 @@ class CreatePipeline:
         self._model = artifact.metadata["model"]
         self._metric = artifact.metadata["metrics"]
         self._split = artifact.metadata["split"]
-        self.summary()
+        self.summary(True)
