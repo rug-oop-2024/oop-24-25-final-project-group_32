@@ -38,7 +38,6 @@ class WrapperLinearSVC(Model):
             "coefficients": np.array(self._model.coef_),
             "intercept": np.atleast_1d(self._model.intercept_),
         }
-        self._data = observation
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
         """

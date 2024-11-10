@@ -35,7 +35,6 @@ class RandomForest(Model):
         """
         self._model.fit(observation, ground_truth)
         self.parameters = {"estimations": self._model.estimators_}
-        self._data = observation
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
         """

@@ -45,8 +45,6 @@ class LassoWrapper(Model):
             "intercept": np.atleast_1d(self._lasso.intercept_),
         }
 
-        self._data = observations
-
     def predict(self, observations: np.ndarray) -> np.ndarray:
         """
         Predicts the target values for a given set of observations using

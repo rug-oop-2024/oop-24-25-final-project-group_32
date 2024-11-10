@@ -60,7 +60,6 @@ class MultipleLinearRegression(Model):
         next_product = np.matmul(invert, transposed_observation_matrix)
         weights = np.matmul(next_product, ground_truth)
         self._parameters["weights"] = weights
-        self._data = observation
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
         """
