@@ -62,7 +62,7 @@ class Model(ABC):
             return self._type
         else:
             raise ValueError("The type cannot be None")
-        
+
     @property
     def name(self) -> str:
         """
@@ -139,4 +139,3 @@ class Model(ABC):
             data=None
         )
         return artifact
-    

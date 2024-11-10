@@ -280,6 +280,7 @@ class RSquared(Metric):
         else:
             return float(1 - (nominator / denomiter))
 
+
 def get_metric(name: str) -> Metric:
     """
     Factory function to get a metric by name.

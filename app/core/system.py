@@ -2,8 +2,6 @@ from autoop.core.storage import LocalStorage
 from autoop.core.database import Database
 from autoop.core.ml.artifact import Artifact
 from autoop.core.storage import Storage
-from autoop.functional.feature import detect_feature_types
-import streamlit as st
 from typing import List, Optional
 import os
 
