@@ -35,8 +35,6 @@ class ArtifactRegistry:
         Args:
             artifact (Artifact): The artifact to be registered.
         """
-        st.write(item.name for item in detect_feature_types(artifact))
-
         self._storage.save(artifact.data, artifact.asset_path)
 
         entry = {
