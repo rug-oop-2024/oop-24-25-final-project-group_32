@@ -20,8 +20,8 @@ class WrapperLinearSVC(Model):
         super().__init__()
         self._model = LinearSVC(*args, **kwargs)
         new_parameters = self._model.get_params()
-        self.parameters = new_parameters
-        self.type = "classification"
+        self._parameters = new_parameters
+        self._type = "classification"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """
@@ -33,7 +33,7 @@ class WrapperLinearSVC(Model):
             corresponding to the observations.
         """
         self._model.fit(observation, ground_truth)
-        self.parameters = {
+        self._parameters = {
             "coefficients": np.array(self._model.coef_),
             "intercept": np.atleast_1d(self._model.intercept_),
         }

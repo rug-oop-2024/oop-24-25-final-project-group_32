@@ -54,6 +54,29 @@ class Feature:
         """
         self._type = value
 
+    def to_artifact(self) -> dict:
+        """
+        Converts the feature to an artifact dictionary.
+
+        Returns:
+            dict: The feature as an artifact dictionary.
+        """
+        return {
+            "name": self._name,
+            "type": self._type
+        }
+    
+    def from_artifact(self, artifact: dict) -> None:
+        """
+        Loads a feature from an artifact dictionary.
+
+        Args:
+            artifact (dict): The artifact dictionary to load from.
+        """
+        self._name = artifact["name"]
+        self._type = artifact["type"]
+        return self
+
     def __str__(self) -> str:
         """
         Provides a string representation of the feature.

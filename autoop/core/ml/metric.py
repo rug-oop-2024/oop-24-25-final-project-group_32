@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
+import streamlit as st
+from copy import deepcopy
 
 ClASSIFICATION_METRICS = [
     "accuracy",
@@ -103,6 +105,7 @@ class Accuracy(Metric):
     """
     Accuracy metric for classification.
     """
+    name = "accuracy"
 
     def evaluate(self,
                  prediction: np.ndarray,
@@ -130,6 +133,7 @@ class LogarithmicLoss(Metric):
     """
     Logarithmic Loss metric for classification with probabilistic outputs.
     """
+    name = "logarithmic_loss"
 
     def evaluate(self,
                  prediction: np.ndarray,
@@ -170,6 +174,7 @@ class MacroAveragePrecision(Metric):
     individually and
     then averages these scores, treating all classes equally.
     """
+    name = "macro_average"
     def evaluate(self, prediction: np.ndarray,
                  ground_truth: np.ndarray) -> float:
         """
@@ -180,9 +185,11 @@ class MacroAveragePrecision(Metric):
         Returns:
             float: The computed metric score
         """
-        unique_labels = np.unique(ground_truth)
+        unique_labels = np.unique(deepcopy(ground_truth))
         precision_per_class = []
         for label in unique_labels:
+            st.write(ground_truth)
+            st.write(prediction)
             correct = np.sum((ground_truth == label) & (prediction == label))
             incorrect = np.sum((ground_truth != label) & (prediction == label))
             try:
@@ -197,6 +204,7 @@ class MeanSquaredError(Metric):
     """
     Mean Squared Error (MSE) metric for regression.
     """
+    name = "mean_squared_error"
 
     def evaluate(self,
                  prediction: np.ndarray,
@@ -221,6 +229,7 @@ class RootMeanSquaredError(Metric):
     """
     Root Mean Squared Error (RMSE) metric for regression.
     """
+    name = "root_mean_squared_error"
 
     def evaluate(self,
                  prediction: np.ndarray,
@@ -246,6 +255,7 @@ class RSquared(Metric):
     """
     R-squared (Coefficient of Determination) metric for regression.
     """
+    name = "r_squared"
 
     def evaluate(self,
                  prediction: np.ndarray,
@@ -262,13 +272,13 @@ class RSquared(Metric):
             float: R-squared score, with 1 being perfect fit.
         """
         self._check_arrays(predictions=prediction, ground_truth=ground_truth)
-        nominator = np.sum((ground_truth - prediction) ** 2)
+        nominator = np.sum((np.mean(ground_truth) - prediction) ** 2)
+        st.write(ground_truth)
         denomiter = np.sum((ground_truth - np.mean(ground_truth)) ** 2)
         if denomiter == 0:
             return print("cannot divide by zero")
         else:
             return float(1 - (nominator / denomiter))
-
 
 def get_metric(name: str) -> Metric:
     """
