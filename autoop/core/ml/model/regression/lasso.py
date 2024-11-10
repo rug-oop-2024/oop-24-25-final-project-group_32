@@ -41,8 +41,8 @@ class LassoWrapper(Model):
         """
         self._lasso.fit(observations, ground_truth)
         self.parameters = {
-            "coefficients": np.array(self._model.coef_),
-            "intercept": np.atleast_1d(self._model.intercept_),
+            "coefficients": np.array(self._lasso.coef_),
+            "intercept": np.atleast_1d(self._lasso.intercept_),
         }
 
         self._data = observations

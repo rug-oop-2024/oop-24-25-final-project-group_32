@@ -264,11 +264,10 @@ class RSquared(Metric):
         self._check_arrays(predictions=prediction, ground_truth=ground_truth)
         nominator = np.sum((ground_truth - prediction) ** 2)
         denomiter = np.sum((ground_truth - np.mean(ground_truth)) ** 2)
-
-        try:
+        if denomiter == 0:
+            return print("cannot divide by zero")
+        else:
             return float(1 - (nominator / denomiter))
-        except ZeroDivisionError:
-            print("You cannot divide by zero")
 
 
 def get_metric(name: str) -> Metric:
