@@ -181,4 +181,4 @@ If you did not implement the feature
 If you add extra features, please indicate them below:
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|---------|-----|
-|  `ST/modelling/pipeline/save`         |      FN      |  Maurice             |  X      | |
+|  `ST/datasets/management/delete`      |      FN      |  Maurice             |  X      | |
