@@ -15,6 +15,17 @@ REGRESSION_METRICS = [
 
 
 def get_metrics(type: str) -> list:
+    """
+    Getter for the metrics.
+
+    Args:
+        type (str): A string that decides which
+        metrics are available for the inputted feature
+
+    Returns:
+        list: The list of available metrics.
+    """
+
     if type == "classification":
         return ClASSIFICATION_METRICS
     elif type == "regression":
@@ -66,7 +77,7 @@ class Metric(ABC):
                 f"The number of predictions ({len(predictions)}) must equal ",
                 f"the number of ground truth labels ({len(ground_truth)}).",
             )
-        if len(predictions) == 0:
+        if (len(predictions) == 0) or (len(ground_truth) == 0):
             raise ValueError(
                 "Predictions and ground truth arrays cannot be empty."
             )
@@ -108,8 +119,11 @@ class Accuracy(Metric):
             float: Accuracy score as a ratio of correct predictions.
         """
         self._check_arrays(predictions=prediction, ground_truth=ground_truth)
+
+        if ground_truth.ndim > 1:
+            ground_truth = np.argmax(ground_truth, axis=1)
         correct = np.sum(prediction == ground_truth)
-        return correct / len(ground_truth)
+        return float(correct / len(ground_truth))
 
 
 class LogarithmicLoss(Metric):
@@ -135,18 +149,27 @@ class LogarithmicLoss(Metric):
         """
         self._check_arrays(predictions=prediction, ground_truth=ground_truth)
 
+        prediction = np.clip(prediction, 0, 1)
+
         log_loss = np.sum(
-            ground_truth * np.log(prediction) +
-            (1 - ground_truth) * np.log(1 - prediction)
+            ground_truth * np.log(
+                prediction) + (1 - ground_truth) * np.log(1 - prediction)
         )
 
         try:
-            return -log_loss / len(ground_truth)
+            return float(-log_loss / len(ground_truth))
         except ZeroDivisionError:
             print("You cannot divide by zero")
 
 
 class MacroAveragePrecision(Metric):
+    """
+    A class to compute the macro-average precision for multi-class
+    classification tasks.
+    Macro-average precision calculates the precision for each class
+    individually and
+    then averages these scores, treating all classes equally.
+    """
     def evaluate(self, prediction: np.ndarray,
                  ground_truth: np.ndarray) -> float:
         """
@@ -160,16 +183,14 @@ class MacroAveragePrecision(Metric):
         unique_labels = np.unique(ground_truth)
         precision_per_class = []
         for label in unique_labels:
-            correct = np.sum((ground_truth == label) &
-                             (prediction == label))
-            incorrect = np.sum((ground_truth != label) &
-                               (prediction == label))
+            correct = np.sum((ground_truth == label) & (prediction == label))
+            incorrect = np.sum((ground_truth != label) & (prediction == label))
             try:
                 precision = correct / (correct + incorrect)
             except ZeroDivisionError:
                 precision = 0
             precision_per_class.append(precision)
-        return np.mean(precision_per_class)
+        return float(np.mean(precision_per_class))
 
 
 class MeanSquaredError(Metric):
@@ -192,8 +213,8 @@ class MeanSquaredError(Metric):
             float: Mean squared error value.
         """
         self._check_arrays(predictions=prediction, ground_truth=ground_truth)
-        errors = (prediction - ground_truth) ** 2
-        return np.mean(errors)
+        errors = np.mean((prediction - ground_truth) ** 2)
+        return float(errors)
 
 
 class RootMeanSquaredError(Metric):
@@ -217,8 +238,8 @@ class RootMeanSquaredError(Metric):
             float: Root mean squared error value.
         """
         self._check_arrays(predictions=prediction, ground_truth=ground_truth)
-        errors = (prediction - ground_truth) ** 2
-        return np.sqrt(np.mean(errors))
+        errors = np.mean((prediction - ground_truth) ** 2)
+        return float(np.sqrt(errors))
 
 
 class RSquared(Metric):
@@ -245,7 +266,7 @@ class RSquared(Metric):
         denomiter = np.sum((ground_truth - np.mean(ground_truth)) ** 2)
 
         try:
-            return 1 - (nominator / denomiter)
+            return float(1 - (nominator / denomiter))
         except ZeroDivisionError:
             print("You cannot divide by zero")
 

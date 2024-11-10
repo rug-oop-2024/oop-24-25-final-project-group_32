@@ -6,6 +6,15 @@ from autoop.core.ml.artifact import Artifact
 
 
 class KNearestNeighbors(Model):
+    """
+    A k-Nearest Neighbors (KNN) classifier for supervised learning tasks.
+
+    This KNN classifier predicts the label of a test instance
+    based on the labels of its nearest neighbors in the training data.
+    The distance between instances is calculated,
+    and the most frequent label among the k-nearest neighbors is assigned
+    as the prediction for a test instance.
+    """
     def __init__(self, k: int = 3):
         """
         Initializes the KNearestNeighbors model.
@@ -15,7 +24,7 @@ class KNearestNeighbors(Model):
             that will be used for the model predictions.
         """
         super().__init__()
-        self._k: int = k
+        self.k: int = k
         self._type = "classification"
 
     @property
@@ -43,16 +52,21 @@ class KNearestNeighbors(Model):
 
     def fit(self, observations: np.ndarray, ground_truth: np.ndarray) -> None:
         """
-        Fits the data by storing the observations
-        and the ground truth together.
+        Fits the data by storing the observations and ground truth.
 
         Args:
             observations (np.ndarray): A numpy array
-            that contains one data point in each row.
-
+            containing data points (rows).
             ground_truth (np.ndarray): A numpy array
-            containing all the corresponding labels
+            containing corresponding labels.
+
+        Raises:
+            ValueError: If observations and ground_truth lengths do not match.
         """
+        if observations.shape[0] != ground_truth.shape[0]:
+            raise ValueError("The number of observations and"
+                             " ground_truth labels must match.")
+
         self._parameters = {
             "observations": observations,
             "ground_truth": ground_truth
@@ -89,16 +103,16 @@ class KNearestNeighbors(Model):
 
         Returns: the most common label among the k-nearest neighbors.
         """
-        difference = np.linalg.norm(self._parameters["observations"] -
-                                    data_point, axis=1)
+        difference = np.linalg.norm(self._parameters[
+            "observations"] - data_point, axis=1)
         k_indices = np.argsort(difference)[:self.k]
         k_nearest_labels = [self._parameters["ground_truth"][index].tolist()
                             for index in k_indices]
-        k_nearest_labels = [str(label) for label in k_nearest_labels]
-        prediction = Counter(k_nearest_labels).most_common()
+        final_k_nearest_labels = [str(label) for label in k_nearest_labels]
+        prediction = Counter(final_k_nearest_labels).most_common()
         return prediction[0][0]
 
-    def to_artifact(self, name) -> Artifact:
+    def to_artifact(self, name: str) -> Artifact:
         """
         Converts the model instance into an Artifact for storage or tracking.
 
@@ -106,16 +120,15 @@ class KNearestNeighbors(Model):
             name (str): The name to assign to the Artifact.
 
         Returns:
-            Artifact: An Artifact instance representing the model,
-            including its asset path, version, encoded data,
-            type, parameters, and tags.
+            Artifact: An Artifact instance representing the model.
         """
-        artifact = Artifact(name,
-                            "asset_path",
-                            "1.0.0",
-                            self._data.encode(),
-                            "k nearest",
-                            self._parameters,
-                            ["classification"]
-                            )
+        artifact = Artifact(
+            name=name,
+            asset_path="asset_path",
+            version="1.0.0",
+            encoded_data=self._data.tobytes(),
+            model_type="k nearest",
+            parameters=self._parameters,
+            tags=["classification"]
+        )
         return artifact

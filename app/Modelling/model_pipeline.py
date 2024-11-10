@@ -81,6 +81,11 @@ class CreatePipeline:
 
     @property
     def model(self) -> Optional[str]:
+        """
+        Getter for the model
+
+        Returns: The model
+        """
         return self._model
 
     def choose_data(self) -> None:
@@ -129,7 +134,7 @@ class CreatePipeline:
             if feature.name == self._target_feature.name:
                 features.pop(ind)
         self._input_features = st.multiselect("Select input features",
-                                        features)
+                                              features)
 
     def choose_model(self) -> None:
         """

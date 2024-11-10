@@ -56,16 +56,24 @@ class Pipeline:
         self._metrics = metrics
         self._artifacts = {}
         self._split = split
-        if (target_feature.type == "categorical"
-                and model.type != "classification"):
+        if (
+            (target_feature.type == "categorical") and (
+                model.type != "classification")):
             raise ValueError(f"Invalid model type {model.type}. Model type"
                              "must be classification for categorical feature")
-        if (target_feature.type == "continuous"
-                and model.type != "regression"):
+        if (
+            (target_feature.type == "continuous") and (
+                model.type != "regression")):
             raise ValueError(f"Invalid model type {model.type}.Model type must"
                              "be regression for continuous feature")
 
     def __str__(self) -> str:
+        """
+        Represents the instance of the object in a string form
+
+        Returns:
+            str: The string for the object
+        """
         return f"""
         Pipeline(
             model={self._model.type},

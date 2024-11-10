@@ -5,7 +5,6 @@ from copy import deepcopy
 from typing import Dict, Any, Literal
 
 
-
 class Model(ABC):
     """
     Base class for the models.
