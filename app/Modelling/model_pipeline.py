@@ -90,6 +90,22 @@ class CreatePipeline:
         """
         return self._model
 
+    def _convert_artifact_to_dataset(self, artifact: Artifact) -> Dataset:
+        """
+        Converts an artifact to a dataset.
+
+        Args:
+            artifact (Artifact): The artifact to be converted.
+
+        Returns:
+            Dataset: The converted dataset.
+        """
+        return Dataset.from_dataframe(pd.read_csv(io.StringIO(
+            artifact.data.decode())),
+            artifact.name,
+            artifact.asset_path,
+            artifact.version)
+
     def choose_data(self) -> None:
         """
         Prompts the user to select a dataset from
@@ -102,11 +118,7 @@ class CreatePipeline:
             selected = st.selectbox("Select your dataset", datasets,
                                     format_func=lambda data: data.name)
             if st.button("Choose"):
-                self._data = Dataset.from_dataframe(pd.read_csv(io.StringIO(
-                    selected.data.decode())),
-                    selected.name,
-                    selected.asset_path,
-                    selected.version)
+                self._data = self._convert_artifact_to_dataset(selected)
                 self._features = detect_feature_types(self._data)
         else:
             st.write(f"Chosen dataset: {self._data.name}")
@@ -186,6 +198,8 @@ class CreatePipeline:
         st.write(f"**Split ratio**: {self._split}")
         if st.button("Create"):
             self.create_pipeline()
+        self.save("test", "1.0.0")
+
 
     def create_pipeline(self) -> None:
         """
@@ -210,9 +224,35 @@ class CreatePipeline:
         for metric in list(self._results.values())[2]:
             st.write(f"{metric[0].name}: {metric[1]}")
 
-    def save(self) -> None:
+    def save(self, name: str, version: str = "1.0.0") -> None:
         """
         Saves the pipeline to the artifact registry.
         """
         if st.button("Save"):
-            artifact  = Artifact()
+            artifact  = Artifact(name=name,
+                                 asset_path = name,
+                                 version = version,
+                                 data = self._data,
+                                 type = "pipeline",
+                                 metadata = {"model": self._model,
+                                               "data": self._data.id,
+                                               "input_features": [feature.to_artifact() for feature in self._input_features],
+                                               "target_feature": self._target_feature.to_artifact(),
+                                               "split": self._split,
+                                               "metrics": self._metric},
+                                tags = ["pipeline"])
+            self._automl.registry.register(artifact)
+
+    def load(self, artifact: Artifact) -> None:
+        """
+        Loads a pipeline from the artifact registry.
+        """
+        self._data = self._convert_artifact_to_dataset(
+                self._automl.registry.get(artifact.metadata["data"]))
+        print(f"target feature: {artifact.metadata['target_feature']}")
+        self._target_feature = Feature(artifact.metadata["target_feature"]["name"], artifact.metadata["target_feature"]["type"])
+        self._input_features = [Feature(feature["name"], feature["type"]) for feature in artifact.metadata["input_features"]]
+        self._model = artifact.metadata["model"]
+        self._metric = artifact.metadata["metrics"]
+        self._split = artifact.metadata["split"]
+        self.summary()

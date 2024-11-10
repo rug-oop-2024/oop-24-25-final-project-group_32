@@ -1,5 +1,6 @@
 import streamlit as st
 from app.core.system import AutoMLSystem
+from app.Modelling.model_pipeline import CreatePipeline
 
 def configure_page() -> None:
     """
@@ -18,6 +19,16 @@ def write_helper_text(text: str) -> None:
     """
     st.write(f"<p style=\"color: #888;\">{text}</p>", unsafe_allow_html=True)
 
+def initialize_pipeline() -> CreatePipeline:
+    """
+    Initializes the machine learning pipeline creation instance.
+
+    Returns:
+        CreatePipeline: An instance of the `CreatePipeline` class
+        from `model_pipeline`.
+    """
+    return CreatePipeline().get_instance()
+
 def main() -> None:
     """
     Main function to run the Streamlit app
@@ -29,6 +40,7 @@ def main() -> None:
     metrics, and split configuration.
     """
     autoML = AutoMLSystem.get_instance()
+    load_pipeline = initialize_pipeline()
     configure_page()
     st.write("# 🦾 Deployment")
     write_helper_text("In this section, you can manage and use "
@@ -37,17 +49,9 @@ def main() -> None:
     if len(saved_pipelines) == 0:
         st.write("No pipelines saved yet.")
     else:
-        selected_pipeline = st.selectbox("Select a pipeline", saved_pipelines)
-        pipeline = autoML.registry.get(selected_pipeline)
-        st.write(pipeline)
-        if st.button("Deploy"):
-            autoML.deploy(pipeline)
-            st.write("Pipeline deployed successfully.")
-        if st.button("Delete"):
-            autoML.registry.delete(selected_pipeline)
-            st.write("Pipeline deleted successfully.")
-        if st.button("Download"):
-            st.write("Downloaded pipeline.")
-            st.write("Downloaded pipeline configuration.")
-            st.write("Downloaded pipeline model.")
-            st.write("Downloaded pipeline artifacts.")
+        selected_pipeline = st.selectbox("Select a pipeline", saved_pipelines, format_func=lambda x: x.name)
+        if st.button("load"):
+            load_pipeline.load(selected_pipeline)
+
+if __name__ == "__main__":
+    main()

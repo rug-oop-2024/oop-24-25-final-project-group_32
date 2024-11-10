@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
+import streamlit as st
+from copy import deepcopy
 
 ClASSIFICATION_METRICS = [
     "accuracy",
@@ -183,9 +185,11 @@ class MacroAveragePrecision(Metric):
         Returns:
             float: The computed metric score
         """
-        unique_labels = np.unique(ground_truth)
+        unique_labels = np.unique(deepcopy(ground_truth))
         precision_per_class = []
         for label in unique_labels:
+            st.write(ground_truth)
+            st.write(prediction)
             correct = np.sum((ground_truth == label) & (prediction == label))
             incorrect = np.sum((ground_truth != label) & (prediction == label))
             try:
@@ -268,13 +272,13 @@ class RSquared(Metric):
             float: R-squared score, with 1 being perfect fit.
         """
         self._check_arrays(predictions=prediction, ground_truth=ground_truth)
-        nominator = np.sum((ground_truth - prediction) ** 2)
+        nominator = np.sum((np.mean(ground_truth) - prediction) ** 2)
+        st.write(ground_truth)
         denomiter = np.sum((ground_truth - np.mean(ground_truth)) ** 2)
         if denomiter == 0:
             return print("cannot divide by zero")
         else:
             return float(1 - (nominator / denomiter))
-
 
 def get_metric(name: str) -> Metric:
     """
