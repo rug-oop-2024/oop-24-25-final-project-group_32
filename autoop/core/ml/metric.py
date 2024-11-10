@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import numpy as np
-import streamlit as st
 from copy import deepcopy
 
 ClASSIFICATION_METRICS = [
@@ -122,7 +121,8 @@ class Accuracy(Metric):
             float: Accuracy score as a ratio of correct predictions.
         """
         self._check_arrays(predictions=prediction, ground_truth=ground_truth)
-
+        if prediction.ndim > 1:
+            prediction = np.argmax(prediction, axis=1)
         if ground_truth.ndim > 1:
             ground_truth = np.argmax(ground_truth, axis=1)
         correct = np.sum(prediction == ground_truth)
@@ -154,6 +154,10 @@ class LogarithmicLoss(Metric):
         self._check_arrays(predictions=prediction, ground_truth=ground_truth)
 
         prediction = np.clip(prediction, 0, 1)
+        if prediction.ndim > 1:
+            prediction = np.argmax(prediction, axis=1)
+        if ground_truth.ndim > 1:
+            ground_truth = np.argmax(ground_truth, axis=1)
 
         log_loss = np.sum(
             ground_truth * np.log(
@@ -186,10 +190,13 @@ class MacroAveragePrecision(Metric):
             float: The computed metric score
         """
         unique_labels = np.unique(deepcopy(ground_truth))
+        if prediction.ndim > 1:
+            prediction = np.argmax(prediction, axis=1)
+        if ground_truth.ndim > 1:
+            ground_truth = np.argmax(ground_truth, axis=1)
+
         precision_per_class = []
         for label in unique_labels:
-            st.write(ground_truth)
-            st.write(prediction)
             correct = np.sum((ground_truth == label) & (prediction == label))
             incorrect = np.sum((ground_truth != label) & (prediction == label))
             try:
@@ -273,7 +280,6 @@ class RSquared(Metric):
         """
         self._check_arrays(predictions=prediction, ground_truth=ground_truth)
         nominator = np.sum((np.mean(ground_truth) - prediction) ** 2)
-        st.write(ground_truth)
         denomiter = np.sum((ground_truth - np.mean(ground_truth)) ** 2)
         if denomiter == 0:
             return print("cannot divide by zero")

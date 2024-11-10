@@ -159,6 +159,19 @@ class Artifact:
         """
 
         return f"{self._id}:{self._version}"
+    
+    def get(self, key: str) -> Optional[str]:
+        """
+        getter for type, we need it because it is called in pipeline class
+
+        Args: 
+            key (str): the key of the artifact, this will only be "type"
+            
+        Returns:
+            Optional[str]: the type of the artifact
+        """
+        if key == "type":
+            return self._type
 
     def read(self) -> bytes:
         """
