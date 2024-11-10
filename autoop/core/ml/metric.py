@@ -278,8 +278,7 @@ class RSquared(Metric):
         if denomiter == 0:
             return print("cannot divide by zero")
         else:
-            return float(1 - nominator / denomiter)
-
+            return float(1 - (nominator / denomiter))
 
 def get_metric(name: str) -> Metric:
     """
