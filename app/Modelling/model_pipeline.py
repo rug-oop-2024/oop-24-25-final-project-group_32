@@ -136,9 +136,12 @@ class CreatePipeline:
             datasets = self._automl.registry.list(type="dataset")
             selected = st.selectbox("Select your dataset", datasets,
                                     format_func=lambda data: data.name)
-            if st.button("Choose"):
-                self._data = self._convert_artifact_to_dataset(selected)
-                self._features = detect_feature_types(self._data)
+            if len(datasets) > 0:
+                if st.button("Choose"):
+                    self._data = self._convert_artifact_to_dataset(selected)
+                    self._features = detect_feature_types(self._data)
+                elif st.button("delete"):
+                    self._automl.registry.delete(selected.id)
         else:
             st.write(f"Chosen dataset: {self._data.name}")
             if st.button("Change data"):
@@ -297,7 +300,6 @@ class CreatePipeline:
         """
         self._data = self._convert_artifact_to_dataset(
             self._automl.registry.get(artifact.metadata["data"]))
-        print(f"target feature: {artifact.metadata['target_feature']}")
         self._target_feature = Feature(
             artifact.metadata["target_feature"]["name"],
             artifact.metadata["target_feature"]["type"])

@@ -1,10 +1,10 @@
 from autoop.core.ml.model.model import Model
 import numpy as np
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
 from autoop.core.ml.artifact import Artifact
 
 
-class RandomForest(Model):
+class KNearestNeighbors(Model):
     """
     Random Forest Classifier model for predicting a categorical
     target variable.
@@ -13,17 +13,18 @@ class RandomForest(Model):
     (features) and ground truth (target variable) using the
     Normal Equation method.
     """
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, k: int = 5, *args, **kwargs) -> None:
         """
         Initializes the random forest model by creating an
         instance of RandomForest.
         """
         super().__init__()
-        self._model = RandomForestClassifier(*args, **kwargs)
+        self._model = KNeighborsClassifier(k, *args, **kwargs)
         new_parameters = self._model.get_params()
         self.parameters = new_parameters
+        self.parameters["k"] = k
         self._type = "classification"
-        self._name = "Random Forest Classifier"
+        self._name = "KNN"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """
@@ -34,9 +35,8 @@ class RandomForest(Model):
             ground_truth (np.ndarray): A 1D array of target values
             corresponding to the observations.
         """
+
         self._model.fit(observation, ground_truth)
-        self.parameters = {"estimations": self._model.estimators_}
-        self._data = observation
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
         """

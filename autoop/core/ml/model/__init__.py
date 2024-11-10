@@ -11,8 +11,7 @@ from autoop.core.ml.model.regression.lasso import (
     Lasso)
 from autoop.core.ml.model.classification.linear_SVC import (
     WrapperLinearSVC)
-from autoop.core.ml.model.classification.k_nearest_neighbors import (
-    KNearestNeighbors)
+from autoop.core.ml.model.classification.wrapperknn import (KNearestNeighbors)
 
 from typing import Optional
 
