@@ -99,7 +99,7 @@ class CreatePipeline:
         Returns: The metric
         """
         return self._metric
-    
+
     @property
     def split(self) -> Optional[float]:
         """
@@ -201,7 +201,7 @@ class CreatePipeline:
         self._split = st.slider("Select the split ratio", 0.1, 0.9, 0.8)
 
     @st.dialog("Summary", width="large")
-    def summary(self, existed:  bool = False) -> None:
+    def summary(self, existed: bool = False) -> None:
         """
         Displays a summary of the chosen dataset, features, model, metrics,
         and split ratio.
@@ -220,7 +220,13 @@ class CreatePipeline:
             if data:
                 if st.button("Train"):
                     data_features = detect_feature_types(data)
-                    if self._target_feature.name in [feature.name for feature in data_features] and set([feature.name for feature in self._input_features]).issubset(set([feature.name for feature in data_features])):
+                    target_in_features = self._target_feature.name in [
+                        feature.name for feature in data_features]
+                    input_in_features = set(
+                        feature.name for
+                        feature in self._input_features).issubset(
+                            set(feature.name for feature in data_features))
+                    if target_in_features and input_in_features:
                         self._data = data
                         self.create_pipeline()
                     else:
@@ -233,12 +239,12 @@ class CreatePipeline:
                 name = st.text_input("Name")
                 version = st.text_input("Version", "1.0.0")
                 if name and version:
-                    if name not in [pipeline.name for pipeline in self._automl.registry.list("pipeline")]:
+                    if name not in [
+                        pipeline.name for pipeline in
+                            self._automl.registry.list("pipeline")]:
                         self.save(name, version)
                     else:
                         st.write("Name already exists")
-
-
 
     def create_pipeline(self) -> None:
         """
@@ -252,8 +258,7 @@ class CreatePipeline:
             model=get_model(self._model),
             input_features=self._input_features,
             target_feature=self._target_feature,
-            split=self._split
-        )
+            split=self._split)
         st.write("Pipeline created.")
         self._results = pipeline.execute()
         st.write(f"**{list(self._results.keys())[0]}**:")
@@ -268,18 +273,21 @@ class CreatePipeline:
         Saves the pipeline to the artifact registry.
         """
         if st.button("Save"):
-            artifact  = Artifact(name=name,
-                                 asset_path = name,
-                                 version = version,
-                                 data = self._data.data,
-                                 type = "pipeline",
-                                 metadata = {"model": self._model,
-                                               "data": self._data.id,
-                                               "input_features": [feature.to_artifact() for feature in self._input_features],
-                                               "target_feature": self._target_feature.to_artifact(),
-                                               "split": self._split,
-                                               "metrics": self._metric},
-                                tags = ["pipeline"])
+            artifact = Artifact(
+                name=name,
+                asset_path=name,
+                version=version,
+                data=self._data.data,
+                type="pipeline",
+                metadata={"model": self._model,
+                          "data": self._data.id,
+                          "input_features": [
+                              feature.to_artifact() for
+                              feature in self._input_features],
+                          "target_feature": self._target_feature.to_artifact(),
+                          "split": self._split,
+                          "metrics": self._metric},
+                tags=["pipeline"])
             self._automl.registry.register(artifact)
             st.write("Pipeline saved to artifact registry")
 
@@ -288,10 +296,15 @@ class CreatePipeline:
         Loads a pipeline from the artifact registry.
         """
         self._data = self._convert_artifact_to_dataset(
-                self._automl.registry.get(artifact.metadata["data"]))
+            self._automl.registry.get(artifact.metadata["data"]))
         print(f"target feature: {artifact.metadata['target_feature']}")
-        self._target_feature = Feature(artifact.metadata["target_feature"]["name"], artifact.metadata["target_feature"]["type"])
-        self._input_features = [Feature(feature["name"], feature["type"]) for feature in artifact.metadata["input_features"]]
+        self._target_feature = Feature(
+            artifact.metadata["target_feature"]["name"],
+            artifact.metadata["target_feature"]["type"])
+        self._input_features = [
+            Feature(feature["name"],
+                    feature["type"]) for feature in artifact.metadata[
+                        "input_features"]]
         self._model = artifact.metadata["model"]
         self._metric = artifact.metadata["metrics"]
         self._split = artifact.metadata["split"]

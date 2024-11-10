@@ -57,14 +57,16 @@ def main() -> None:
             create_pipeline.choose_model()
             if create_pipeline.model:
                 create_pipeline.choose_input_features()
-                if create_pipeline.input_features and create_pipeline.model != "MultipleLinearRegression" or len(create_pipeline.input_features) > 1 :
-                    create_pipeline.choose_metrics()
-                    if create_pipeline.metrics:
-                        create_pipeline.choose_split()
-                        if create_pipeline.split:
-                            if st.button("Create Pipeline"):
-                                create_pipeline.summary()
-
+                if create_pipeline.input_features:
+                    pipeline = create_pipeline.model
+                    if (pipeline != "MultipleLinearRegression") or (len(
+                            create_pipeline.input_features) > 1):
+                        create_pipeline.choose_metrics()
+                        if create_pipeline.metrics:
+                            create_pipeline.choose_split()
+                            if create_pipeline.split:
+                                if st.button("Create Pipeline"):
+                                    create_pipeline.summary()
 
 
 if __name__ == "__main__":
