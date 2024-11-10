@@ -153,18 +153,18 @@ If you did not implement the feature
 
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|--------------------------|---------|         
-| Up-to-date requirements.txt           | NF           |                      |         | |
-| `ML/detect-features`                  | FN           |  Luca                |    X    | |
+| Up-to-date requirements.txt           | NF           |  Maurice             |    X    | |
+| `ML/detect-features`                  | FN           |  Both                |    X    | |
 | `ML/artifact`                         | NF           |  Maurice             |    X    | |
-| `ML/feature`                          | NF           |  Luca                |    X    | |
+| `ML/feature`                          | NF           |  Both                |    X    | |
 | `ML/metric`                           | NF           |  Maurice             |    X    | |
 | `ML/metric/extensions`                | FN           |  Maurice             |    X    | |
-| `ML/model`                            | NF           |  Luca                |    X    | |
+| `ML/model`                            | NF           |  Both                |    X    | |
 | `ML/model/extensions`                 | FN           |  Maurice             |    X    | |
 | `ML/pipeline/evaluation`              | FN           |  Maurice             |    X    | | 
-| `ST/page/datasets`                    | NF           |  Luca                |    X    | Luca for GUI, cause of Windows not supporting. Maurice changed to helping second hand| 
-| `ST/datasets/management/create`       | FN           |  Luca                |    X    | And doing all the flake8, docstrings, fixing issues and documentation. |
-| `ST/datasets/management/save`         | FN           |  Luca                |    X    | |
+| `ST/page/datasets`                    | NF           |  Luca                |    X    | Luca worked as first hand on GUI, cause of Windows not supporting the GUI (After intensive fixing tries with TA).| 
+| `ST/datasets/management/create`       | FN           |  Luca                |    X    | Maurice changed to helping second hand and doing all the flake8, docstrings, fixing issues and documentation. |
+| `ST/datasets/management/save`         | FN           |  Luca                |    X    | This assured a balanced workload even if that doesnt show from the table on the left. |
 | `ST/page/modelling`                   | NF           |  Luca                |    X    | |
 | `ST/modelling/datasets/list`          | FN           |  Luca                |    X    | |
 | `ST/modelling/datasets/features`      | FN           |  Luca                |    X    | |
@@ -181,4 +181,4 @@ If you did not implement the feature
 If you add extra features, please indicate them below:
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|---------|-----|
-|           |            |                      |         | |
+|  `ST/datasets/management/delete`      |      FN      |  Maurice             |  X      | |

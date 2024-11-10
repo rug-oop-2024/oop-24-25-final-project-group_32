@@ -1,7 +1,7 @@
 from sklearn.svm import LinearSVC
 from autoop.core.ml.model.model import Model
-from autoop.core.ml.artifact import Artifact
 import numpy as np
+
 
 class WrapperLinearSVC(Model):
     """
@@ -38,7 +38,6 @@ class WrapperLinearSVC(Model):
             "coefficients": np.array(self._model.coef_),
             "intercept": np.atleast_1d(self._model.intercept_),
         }
-        self._data = observation
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
         """

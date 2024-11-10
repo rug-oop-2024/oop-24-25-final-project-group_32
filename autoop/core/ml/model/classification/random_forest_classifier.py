@@ -1,7 +1,6 @@
 from autoop.core.ml.model.model import Model
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from autoop.core.ml.artifact import Artifact
 
 
 class RandomForest(Model):
@@ -36,7 +35,6 @@ class RandomForest(Model):
         """
         self._model.fit(observation, ground_truth)
         self.parameters = {"estimations": self._model.estimators_}
-        self._data = observation
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
         """

@@ -62,5 +62,6 @@ def main() -> None:
             autoML.registry.delete(selected_pipeline.id)
             st.write("Pipeline deleted.")
 
+
 if __name__ == "__main__":
     main()
