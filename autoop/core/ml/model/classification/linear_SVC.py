@@ -5,15 +5,23 @@ import numpy as np
 
 
 class WrapperLinearSVC(Model):
-    def __init__(self):
+    """
+    LinearSVC Classifier model for predicting a categorical
+    target variable.
+    This model computes the optimal weights (parameters) for a given
+    set of observations
+    (features) and ground truth (target variable)
+    """
+    def __init__(self, *args, **kwargs):
         """
         Initializes the wrapper logistic regression model by creating an
         instance of WrapperLogisticRegression.
         """
         super().__init__()
-        self._model = LinearSVC()
-        self._type = "classification"
-        self._name = "Linear SVC"
+        self._model = LinearSVC(*args, **kwargs)
+        new_parameters = self._model.get_params()
+        self.parameters = new_parameters
+        self.type = "classification"
 
     def fit(self, observation: np.ndarray, ground_truth: np.ndarray) -> None:
         """
@@ -24,9 +32,13 @@ class WrapperLinearSVC(Model):
             ground_truth (np.ndarray): A 1D array of target values
             corresponding to the observations.
         """
+        if ground_truth.ndim > 1:
+            ground_truth = np.argmax(ground_truth, axis=1)
+
         self._model.fit(observation, ground_truth)
-        self._parameters = {
-            "weights": self._model.get_params()
+        self.parameters = {
+            "coefficients": np.array(self._model.coef_),
+            "intercept": np.atleast_1d(self._model.intercept_),
         }
         self._data = observation
 
@@ -53,12 +65,13 @@ class WrapperLinearSVC(Model):
             including its asset path, version, encoded data,
             type, parameters, and tags.
         """
-        artifact = Artifact(name,
-                            "asset_path",
-                            "1.0.0",
-                            self._data.encode(),
-                            "Linear SVC",
-                            self._parameters,
-                            ["classification"]
-                            )
+        artifact = Artifact(
+            name=name,
+            asset_path="asset_path",
+            version="1.0.0",
+            encoded_data=self._data.tobytes(),
+            model_type="k nearest",
+            parameters=self._parameters,
+            tags=["classification"]
+        )
         return artifact

@@ -88,12 +88,13 @@ class MultipleLinearRegression(Model):
             including its asset path, version, encoded data,
             type, parameters, and tags.
         """
-        artifact = Artifact(name,
-                            "asset_path",
-                            "1.0.0",
-                            self._data.encode(),
-                            "multiple linear regression",
-                            self._parameters,
-                            ["regression"]
-                            )
+        artifact = Artifact(
+            name=name,
+            asset_path="asset_path",
+            version="1.0.0",
+            encoded_data=self._data.tobytes(),
+            model_type="k nearest",
+            parameters=self._parameters,
+            tags=["classification"]
+        )
         return artifact

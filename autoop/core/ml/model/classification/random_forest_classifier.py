@@ -13,13 +13,15 @@ class RandomForest(Model):
     (features) and ground truth (target variable) using the
     Normal Equation method.
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs) -> None:
         """
         Initializes the random forest model by creating an
         instance of RandomForest.
         """
         super().__init__()
-        self._model = RandomForestClassifier()
+        self._model = RandomForestClassifier(*args, **kwargs)
+        new_parameters = self._model.get_params()
+        self.parameters = new_parameters
         self._type = "classification"
         self._name = "Random Forest Classifier"
 
@@ -32,10 +34,11 @@ class RandomForest(Model):
             ground_truth (np.ndarray): A 1D array of target values
             corresponding to the observations.
         """
+        if ground_truth.ndim > 1:
+            ground_truth = np.argmax(ground_truth, axis=1)
+
         self._model.fit(observation, ground_truth)
-        self._parameters = {
-            "parameters": self._model.get_params()
-        }
+        self.parameters = {"estimations": np.array(self._model.estimators_)}
         self._data = observation
 
     def predict(self, observation: np.ndarray) -> np.ndarray:
@@ -61,12 +64,13 @@ class RandomForest(Model):
             including its asset path, version, encoded data,
             type, parameters, and tags.
         """
-        artifact = Artifact(name,
-                            "asset_path",
-                            "1.0.0",
-                            self._data.encode(),
-                            "random forest classifier",
-                            self._parameters,
-                            ["classification"]
-                            )
+        artifact = Artifact(
+            name=name,
+            asset_path="asset_path",
+            version="1.0.0",
+            encoded_data=self._data.tobytes(),
+            model_type="k nearest",
+            parameters=self._parameters,
+            tags=["classification"]
+        )
         return artifact

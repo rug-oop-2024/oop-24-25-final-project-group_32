@@ -5,13 +5,24 @@ import numpy as np
 
 
 class RidgeRegression(Model):
-    def __init__(self):
+    """
+    A Ridge Regression model for linear regression with L2 regularization.
+
+    Ridge Regression minimizes the least squares error
+    with an added penalty term proportional to the square of
+    the magnitude of the coefficients. This helps to prevent overfitting
+    by shrinking the coefficients, making it well-suited for problems with
+    multicollinearity or when there are more features than samples.
+    """
+    def __init__(self, *args, **kwargs):
         """
         Initializes ridge regression model by creating an
         instance of RidgeRegression.
         """
         super().__init__()
-        self._model = Ridge()
+        self._model = Ridge(*args, **kwargs)
+        new_parameters = self._model.get_params()
+        self.parameters = new_parameters
         self._type = "regression"
         self._name = "Ridge Regression"
 
@@ -25,8 +36,9 @@ class RidgeRegression(Model):
             corresponding to the observations.
         """
         self._model.fit(observation, ground_truth)
-        self._parameters = {
-            "weights": self._model.get_params()
+        self.parameters = {
+            "coefficients": np.array(self._model.coef_),
+            "intercept": np.atleast_1d(self._model.intercept_),
         }
         self._data = observation
 
@@ -53,12 +65,13 @@ class RidgeRegression(Model):
             including its asset path, version, encoded data,
             type, parameters, and tags.
         """
-        artifact = Artifact(name,
-                            "asset_path",
-                            "1.0.0",
-                            self._data.encode(),
-                            "ridge regression",
-                            self._parameters,
-                            ["regression"]
-                            )
+        artifact = Artifact(
+            name=name,
+            asset_path="asset_path",
+            version="1.0.0",
+            encoded_data=self._data.tobytes(),
+            model_type="k nearest",
+            parameters=self._parameters,
+            tags=["classification"]
+        )
         return artifact
