@@ -224,7 +224,7 @@ class CreatePipeline:
                         feature.name for feature in data_features]
                     input_in_features = set(
                         feature.name for feature in self._input_features
-                        ).issubset(
+                                           ).issubset(
                             set(feature.name for feature in data_features))
                     if target_in_features and input_in_features:
                         self._data = data
@@ -296,8 +296,7 @@ class CreatePipeline:
         Loads a pipeline from the artifact registry.
         """
         self._data = self._convert_artifact_to_dataset(
-            self._automl.registry.get(artifact.metadata["data"])
-                                                      )
+            self._automl.registry.get(artifact.metadata["data"]))
         print(f"target feature: {artifact.metadata['target_feature']}")
         self._target_feature = Feature(
             artifact.metadata["target_feature"]["name"],
