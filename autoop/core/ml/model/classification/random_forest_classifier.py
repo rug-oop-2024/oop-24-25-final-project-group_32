@@ -34,8 +34,6 @@ class RandomForest(Model):
             ground_truth (np.ndarray): A 1D array of target values
             corresponding to the observations.
         """
-        if ground_truth.ndim > 1:
-            ground_truth = np.argmax(ground_truth, axis=1)
 
         self._model.fit(observation, ground_truth)
         self.parameters = {"estimations": np.array(self._model.estimators_)}
