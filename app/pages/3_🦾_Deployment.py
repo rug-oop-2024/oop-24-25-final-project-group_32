@@ -58,7 +58,9 @@ def main() -> None:
                                          format_func=lambda x: x.name)
         if st.button("load"):
             load_pipeline.load(selected_pipeline)
-
+        if st.button("delete"):
+            autoML.registry.delete(selected_pipeline.id)
+            st.write("Pipeline deleted.")
 
 if __name__ == "__main__":
     main()

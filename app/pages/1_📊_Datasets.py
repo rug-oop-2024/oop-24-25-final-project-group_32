@@ -22,8 +22,10 @@ def manage_dataset() -> None:
         Exception: If either `create` or `save` functions throw an error.
     """
     data = create()
+    if data:
+        st.write(data.read())
     save(data)
-
+    
 
 display_title()
 manage_dataset()

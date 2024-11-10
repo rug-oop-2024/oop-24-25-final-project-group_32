@@ -75,26 +75,3 @@ class MultipleLinearRegression(Model):
         """
         observation_matrix = np.c_[observation, np.ones(observation.shape[0])]
         return observation_matrix.dot(self._parameters["weights"])
-
-    def to_artifact(self, name) -> Artifact:
-        """
-        Converts the model instance into an Artifact for storage or tracking.
-
-        Args:
-            name (str): The name to assign to the Artifact.
-
-        Returns:
-            Artifact: An Artifact instance representing the model,
-            including its asset path, version, encoded data,
-            type, parameters, and tags.
-        """
-        artifact = Artifact(
-            name=name,
-            asset_path="asset_path",
-            version="1.0.0",
-            encoded_data=self._data.tobytes(),
-            model_type="k nearest",
-            parameters=self._parameters,
-            tags=["classification"]
-        )
-        return artifact

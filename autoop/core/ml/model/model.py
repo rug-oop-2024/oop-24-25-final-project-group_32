@@ -132,10 +132,11 @@ class Model(ABC):
         """
         artifact = Artifact(
             name=self._name,
-            type=self._type,
+            type="model",
             version=version,
             asset_path=self._name,
             parameters=self._parameters,
-            data=None
+            data=None,
+            tag=[self._type]
         )
         return artifact

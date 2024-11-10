@@ -3,7 +3,6 @@ from autoop.core.ml.model.model import Model
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 
-
 class WrapperLinearSVC(Model):
     """
     LinearSVC Classifier model for predicting a categorical
@@ -32,6 +31,8 @@ class WrapperLinearSVC(Model):
             ground_truth (np.ndarray): A 1D array of target values
             corresponding to the observations.
         """
+        if ground_truth.ndim > 1:
+            ground_truth = np.argmax(ground_truth, axis=1)
         self._model.fit(observation, ground_truth)
         self._parameters = {
             "coefficients": np.array(self._model.coef_),
@@ -49,26 +50,3 @@ class WrapperLinearSVC(Model):
             np.ndarray: A 1D array of predicted target values.
         """
         return self._model.predict(observation)
-
-    def to_artifact(self, name) -> Artifact:
-        """
-        Converts the model instance into an Artifact for storage or tracking.
-
-        Args:
-            name (str): The name to assign to the Artifact.
-
-        Returns:
-            Artifact: An Artifact instance representing the model,
-            including its asset path, version, encoded data,
-            type, parameters, and tags.
-        """
-        artifact = Artifact(
-            name=name,
-            asset_path="asset_path",
-            version="1.0.0",
-            encoded_data=self._data.tobytes(),
-            model_type="k nearest",
-            parameters=self._parameters,
-            tags=["classification"]
-        )
-        return artifact
