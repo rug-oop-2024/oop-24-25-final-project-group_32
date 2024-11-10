@@ -51,15 +51,20 @@ def main() -> None:
     create_pipeline = initialize_pipeline()
 
     create_pipeline.choose_data()
-    if create_pipeline.data is not None:
+    if create_pipeline.data:
         create_pipeline.choose_target_feature()
-        create_pipeline.choose_input_features()
-        create_pipeline.choose_model()
-        create_pipeline.choose_metrics()
-        create_pipeline.choose_split()
+        if create_pipeline.target_feature:
+            create_pipeline.choose_model()
+            if create_pipeline.model:
+                create_pipeline.choose_input_features()
+                if create_pipeline.input_features and create_pipeline.model != "MultipleLinearRegression" or len(create_pipeline.input_features) > 1 :
+                    create_pipeline.choose_metrics()
+                    if create_pipeline.metrics:
+                        create_pipeline.choose_split()
+                        if create_pipeline.split:
+                            if st.button("Create Pipeline"):
+                                create_pipeline.summary()
 
-        if st.button("Create Pipeline"):
-            create_pipeline.summary()
 
 
 if __name__ == "__main__":
