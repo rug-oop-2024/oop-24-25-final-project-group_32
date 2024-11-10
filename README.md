@@ -162,8 +162,8 @@ If you did not implement the feature
 | `ML/model`                            | NF           |  Luca                |    X    | |
 | `ML/model/extensions`                 | FN           |  Maurice             |    X    | |
 | `ML/pipeline/evaluation`              | FN           |  Maurice             |    X    | | 
-| `ST/page/datasets`                    | NF           |  Luca                |    X    | | Luca for GUI, cause of Windows not supporting. Maurice changed to helping second hand
-| `ST/datasets/management/create`       | FN           |  Luca                |    X    | | And doing all the flake8, docstrings, fixing issues and documentation.
+| `ST/page/datasets`                    | NF           |  Luca                |    X    | Luca for GUI, cause of Windows not supporting. Maurice changed to helping second hand| 
+| `ST/datasets/management/create`       | FN           |  Luca                |    X    | And doing all the flake8, docstrings, fixing issues and documentation. |
 | `ST/datasets/management/save`         | FN           |  Luca                |    X    | |
 | `ST/page/modelling`                   | NF           |  Luca                |    X    | |
 | `ST/modelling/datasets/list`          | FN           |  Luca                |    X    | |
